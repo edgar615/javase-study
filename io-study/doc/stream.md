@@ -1,0 +1,405 @@
+
+### Inputstream
+- read()
+
+The read() method of an InputStream returns an int which contains the byte value of the byte read. Here is an InputStream read() example:
+Subclasses of InputStream may have alternative read() methods. For instance, the DataInputStream allows you to read Java primitives like int, long, float, double, boolean etc. with its corresponding methods readBoolean(), readDouble() etc.
+
+- read(byte[])
+
+The InputStream class also contains two read() methods which can read data from the InputStream's source into a byte array. These methods are:
+
+  - int read(byte[])
+  - int read(byte[], int offset, int length)
+  
+  
+### Inputstream
+
+- write(byte)
+
+The write(byte) method is used to write a single byte to the OutputStream. The write() method of an OutputStream takes an int which contains the byte value of the byte to write. Only the first byte of the int value is written. The rest is ignored.
+Subclasses of OutputStream may have alternative write() methods. For instance, the DataOutputStream allows you to write Java primitives like int, long, float, double, boolean etc. with its corresponding methods writeBoolean(), writeDouble() etc.
+
+- write(byte[])
+
+The OutputStream class also has a write(byte[] bytes) method and a write(byte[] bytes, int offset, int length) which both can write an array or part of an array of bytes to the OutputStream.
+
+The write(byte[] bytes) method writes all the bytes in the byte array to the OutputStream.
+
+The write(byte[] bytes, int offset, int length) method writes length bytes starting from index offset from the byte array to the OutputStream.
+
+- flush()
+
+The OutputStream's flush() method flushes all data written to the OutputStream to the underlying data destination. For instance, if the OutputStream is a FileOutputStream then bytes written to the FileOutputStream may not have been fully written to disk yet. The data might be buffered in memory somewhere, even if your Java code has written it to the FileOutputStream. By calling flush() you can assure that any buffered data will be flushed (written) to disk (or network, or whatever else the destination of your OutputStream has).
+
+- close()
+
+Once you are done writing data to the OutputStream you should close it. You close an OutputStream by calling its close() method. Since the OutputStream's various write() methods may throw an IOException, you should close the OutputStream inside a finally block. 
+
+
+### 使用InputStream读取byte[]
+The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams
+> ByteArrayInputStream 包含一个内部缓冲区，该缓冲区包含从流中读取的字节。内部计数器跟踪 read 方法要提供的下一个字节。 
+
+- read() 
+> 从此输入流中读取下一个数据字节。返回一个 0 到 255 范围内的 int 字节值。如果因为到达流末尾而没有可用的字节，则返回值 -1。此 read 方法不会阻塞。
+<pre>
+byte[] bytes = "The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams".getBytes("utf-8");
+//  创建一个 ByteArrayInputStream，使用 bytes 作为其缓冲区数组
+InputStream in = new ByteArrayInputStream(bytes);
+int data = in.read();
+while (data != -1) {
+    System.out.print((char) data);
+    data = in.read();
+}
+</pre>
+输出：The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams
+
+- read(byte[])
+> 从输入流中读取一定数量的字节，并将其存储在缓冲区数组 b 中。
+> 
+> 以整数形式返回实际读取的字节数。在输入数据可用、检测到文件末尾或者抛出异常前，此方法一直阻塞。
+> 
+> 如果 b 的长度为 0，则不读取任何字节并返回 0；否则，尝试读取至少一个字节。如果因为流位于文件末尾而没有可用的字节，则返回值 -1；否则，至少读取一个字节并将其存储在 b 中。
+> 
+> 将读取的第一个字节存储在元素 b[0] 中，下一个存储在 b[1] 中，依次类推。读取的字节数最多等于 b 的长度。设 k 为实际读取的字节数；这些字节将存储在 b[0] 到 b[k-1] 的元素中，不影响 b[k] 到 b[b.length-1] 的元素。
+> 
+> 类 InputStream 的 read(b) 方法的效果等同于：
+>  read(b, 0, b.length) 
+
+<pre>
+byte[] bytes = "The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams".getBytes("utf-8");
+InputStream in = new ByteArrayInputStream(bytes);
+int length = 5;
+byte[] b = new byte[length];
+int readLength = in.read(b);
+while (readLength != -1) {
+    System.out.print(new String(b, 0, readLength));
+    readLength = in.read(b);
+}
+</pre> 
+输出：The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams
+
+- read(byte[], off, len)
+>    将最多 len 个数据字节从此输入流读入 byte 数组。如果 pos 等于 count，则返回 -1 指示文件结束。否则，读取的字节数 k 等于 len 和 count-pos 中的较小者。如果 k 是正数，则以 System.arraycopy 执行的方式将 buf[pos] 到 buf[pos+k-1] 的字节复制到 b[off] 到 b[off+k-1] 中。将值 k 与 pos 相加并返回 k。此 read 方法不会阻塞。      
+<pre>
+byte[] bytes = "The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams".getBytes("utf-8");
+InputStream in = new ByteArrayInputStream(bytes);
+int length = 5;
+byte[] b = new byte[length];
+int readLength = in.read(b, 0, length);
+while (readLength != -1) {
+    System.out.print(new String(b, 0, readLength));
+    readLength = in.read(b, 0, length);
+}
+</pre>
+输出：The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams
+
+- ByteArrayInputStream(byte[] buf, int offset, int length) 
+<pre>
+byte[] bytes = "The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams".getBytes("utf-8");
+int offset = 0;
+int length = 5;
+InputStream in = new ByteArrayInputStream(bytes, 0, length);
+int data = in.read();
+while (data != -1) {
+    System.out.print((char) data);
+    data = in.read();
+}
+</pre>
+输出：The B
+
+### 使用OutStream写入byte[]
+The ByteArrayOutputStream class of the Java IO API allows you to capture data written to a stream in an array.
+> ByteArrayOutputStream实现了一个输出流，其中的数据被写入一个 byte 数组。缓冲区会随着数据的不断写入而自动增长。可使用 toByteArray() 和 toString() 获取数据。
+- write(int)
+> 将指定的字节写入此 byte 数组输出流。 
+<pre>
+byte[] bytes = "The ByteArrayInputStream class of the Java IO API allows you to read data from byte arrays as streams".getBytes("utf-8");
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+for (int i = 0; i < bytes.length; i ++) {
+    out.write(bytes[i]);
+}
+System.out.println(out.toString());
+System.out.println(new String(out.toByteArray()));
+System.out.println(out.toString("UTF-8"));
+</pre>
+输出：The ByteArrayOutputStream class of the Java IO API allows you to capture data written to a stream in an array.
+
+- write(byte[])
+> 将 b.length 个字节从指定的 byte 数组写入此输出流。 write(b) 的常规协定是：应该与调用 write(b, 0, b.length) 的效果完全相同。 
+<pre>
+byte[] bytes = "The ByteArrayOutputStream class of the Java IO API allows you to capture data written to a stream in an array.".getBytes("utf-8");
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+out.write(bytes);
+System.out.println(out.toString());
+System.out.println(new String(out.toByteArray()));
+System.out.println(out.toString("UTF-8"));
+</pre>
+输出：The ByteArrayOutputStream class of the Java IO API allows you to capture data written to a stream in an array.
+
+- write(byte[], off, len)
+> 将指定 byte 数组中从偏移量 off 开始的 len 个字节写入此输出流。 write(b, off, len) 的常规协定是：将数组 b 中的某些字节按顺序写入输出流；元素 b[off] 是此操作写入的第一个字节， b[off+len-1] 是此操作写入的最后一个字节。 
+<pre>
+byte[] bytes = "The ByteArrayOutputStream class of the Java IO API allows you to capture data written to a stream in an array.".getBytes("utf-8");
+ByteArrayOutputStream out = new ByteArrayOutputStream();
+out.write(bytes, 0, 5);
+System.out.println(out.toString());
+System.out.println(new String(out.toByteArray()));
+System.out.println(out.toString("UTF-8"));
+</pre>
+输出:The B
+
+### ByteArrayInputStream、ByteArrayOutputStream
+
+
+### FileInputStream、FileOutputStream
+<pre>
+File file = new File("c:\\data\\input-text.txt");
+InputStream input = new FileInputStream(file);
+</pre>
+
+- 重写文件
+<pre>
+OutputStream output = new FileOutputStream("c:\\data\\output-text.txt");
+</pre>
+<pre>
+OutputStream output = new FileOutputStream("c:\\data\\output-text.txt", false);
+</pre>
+
+- 在文件末尾追加
+<pre>
+OutputStream output = new FileOutputStream("c:\\data\\output-text.txt", true);
+</pre>
+
+### BufferedInputStream、BufferedOutputStream
+BufferedInputStream 为另一个输入流添加一些功能，即缓冲输入以及支持 mark 和 reset 方法的能力。在创建 BufferedInputStream 时，会创建一个内部缓冲区数组。在读取或跳过流中的字节时，可根据需要从包含的输入流再次填充该内部缓冲区，一次填充多个字节。mark 操作记录输入流中的某个点，reset 操作使得在从包含的输入流中获取新字节之前，再次读取自最后一次 mark 操作后读取的所有字节。
+它比一次读取一个字节速度更快。
+<pre>
+InputStream in = new BufferedInputStream(new FileInputStream("random.log"));//默认提供8KB的缓冲区
+InputStream in2 = new BufferedInputStream(new FileInputStream("random.log"), 2 * 1024);
+</pre>
+
+BufferedOutputStream 该类实现缓冲的输出流。通过设置这种输出流，应用程序就可以将各个字节写入底层输出流中，而不必针对每次字节写入调用底层系统。
+<pre>
+OutputStream out = new BufferedOutputStream(new FileOutputStream("random.log"));//默认提供8KB的缓冲区
+OutputStream out2 = new BufferedOutputStream(new FileOutputStream("random.log"), 2 * 1024);
+</pre>
+
+### DataInputStream、DataOutputStream
+DataInputStream允许应用程序以与机器无关方式从底层输入流中读取基本 Java 数据类型。应用程序可以使用数据输出流写入稍后由数据输入流读取的数据。
+DataInputStream 对于多线程访问不一定是安全的。 线程安全是可选的，它由此类方法的使用者负责。 
+
+DataOutputStream允许应用程序以适当方式将基本 Java 数据类型写入输出流中。然后，应用程序可以使用数据输入流将数据读入
+<pre>
+  Member member = new Member();
+  member.setAge(28);
+  member.setName("Edgar");
+  DataOutputStream out = new DataOutputStream(new FileOutputStream("data.log"));
+  out.writeInt(member.getAge());
+  out.writeUTF(member.getName());
+  out.flush();
+  out.close();
+</pre>
+<pre>
+Member member = new Member();
+DataInputStream in = new DataInputStream(new FileInputStream("data.log"));
+int age = in.readInt();
+String name = in.readUTF();
+in.close();
+System.out.println(name);
+System.out.println(age);
+</pre>
+输出：
+Edgar
+28
+
+### PrintStream
+PrintStream 为其他输出流添加了功能，使它们能够方便地打印各种数据值表示形式。它还提供其他两项功能。与其他输出流不同，PrintStream 永远不会抛出 IOException；而是，异常情况仅设置可通过 checkError 方法测试的内部标志。另外，为了自动刷新，可以创建一个 PrintStream；这意味着可在写入 byte 数组之后自动调用 flush 方法，可调用其中一个 println 方法，或写入一个换行符或字节 ('\n')。
+
+PrintStream 打印的所有字符都使用平台的默认字符编码转换为字节。在需要写入字符而不是写入字节的情况下，应该使用 PrintWriter 类。 
+<pre>
+PrintStream out = new PrintStream(new FileOutputStream("out2.log"));
+out.print(1);
+out.print(2);
+out.close();
+</pre>
+
+### ObjectInputStream、DataOutputStream 
+ObjectOutputStream 将 Java 对象的基本数据类型和图形写入 OutputStream
+ObjectInputStream 对以前使用 ObjectOutputStream 写入的基本数据和对象进行反序列化。 
+<pre>
+Member member = new Member();
+member.setAge(28);
+member.setName("Edgar");
+ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("object.log"));
+out.writeObject(member);
+out.flush();
+out.close();
+</pre>
+<pre>
+ObjectInputStream in = new ObjectInputStream(new FileInputStream("object.log"));
+Member member = (Member) in.readObject();
+in.close();
+System.out.println(member.getName());
+System.out.println(member.getAge());
+</pre>
+
+### PushbackInputStream
+PushbackInputStream 为另一个输入流添加性能，即“推回 (push back)”或“取消读取 (unread)”一个字节的能力。在代码片段可以很方便地读取由特定字节值分隔的不定数量的数据字节时，这很有用；在读取终止字节后，代码片段可以“取消读取”该字节，这样，输入流上的下一个读取操作将会重新读取被推回的字节。例如，表示构成标识符字符的字节可能由表示操作符字符的字节终止；用于读取一个标识符的方法可以读取到遇到操作符为止，然后将该操作符推回以进行重读
+
+<pre>
+  PushbackInputStream in = new PushbackInputStream(new FileInputStream("PushbackInputStream.log"));
+  int data = in.read();
+  while (data != -1) {
+      if (data == 'a') {
+          in.unread(data);
+      } else {
+          System.out.print((char) data);
+          TimeUnit.SECONDS.sleep(1);
+          data = in.read();
+      }
+  }
+</pre>
+输出:
+The Pushb
+java.io.IOException: Push back buffer is full
+
+<pre>
+//指定推回缓冲区的大小为8
+PushbackInputStream in = new PushbackInputStream(new FileInputStream("PushbackInputStream.log"), 8);
+  int data = in.read();
+  while (data != -1) {
+      if (data == 'a') {
+          System.out.print((char) data);
+          in.unread(data);
+      } else {
+          System.out.print((char) data);
+          TimeUnit.SECONDS.sleep(1);
+          data = in.read();
+      }
+  }
+</pre>
+输出:
+The Pushbaaaaaaaaa
+java.io.IOException: Push back buffer is full
+
+### SequenceInputStream
+SequenceInputStream 表示其他输入流的逻辑串联。它从输入流的有序集合开始，并从第一个输入流开始读取，直到到达文件末尾，接着从第二个输入流读取，依次类推，直到到达包含的最后一个输入流的文件末尾为止。
+
+file1.log的文件内容为:file1.log
+file2.log的文件内容为:file2.log
+
+<pre>
+SequenceInputStream in = new SequenceInputStream(new FileInputStream("file1.log"), new FileInputStream("file2.log"));
+int data = in.read();
+while (data != -1) {
+    System.out.print((char) data);
+    data = in.read();
+}
+</pre>
+输出：
+file1.logfile2.log
+
+
+### RandomAccessFile
+RandomAccessFile可以随机对文件进行读写
+
+random.log文件内容如下：
+> The RandomAccessFile class in the Java IO API allows you to move around a file and read from it or write to it as you please.
+
+默认从0开始
+<pre>
+RandomAccessFile file = new RandomAccessFile("random.log", "rw");
+int data = file.read();
+while (data != -1) {
+    System.out.print((char) data);
+    data = file.read();
+}
+</pre>
+输出
+> The RandomAccessFile class in the Java IO API allows you to move around a file and read from it or write to it as you please.
+
+- seek(long pos)
+
+设置到此文件开头测量到的文件指针偏移量，在该位置发生下一个读取或写入操作。
+<pre>
+RandomAccessFile file = new RandomAccessFile("random.log", "rw");
+file.seek(50);
+int data = file.read();
+while (data != -1) {
+    System.out.print((char) data);
+    data = file.read();
+}
+</pre>
+输出
+> ws you to move around a file and read from it or write to it as you please.
+
+- write(int b)
+
+<pre>
+RandomAccessFile file = new RandomAccessFile("random.log", "rw");
+file.seek(50);
+char[] chars = "[Hello world!]".toCharArray();
+for (int i = 0; i < chars.length; i ++) {
+    file.write(chars[i]);
+}
+file.close();
+</pre>
+文件内容变成了
+> The RandomAccessFile class in the Java IO API allo[Hello world!] around a file and read from it or write to it as you please.
+
+- skipBytes(int n)
+
+尝试跳过输入的 n 个字节以丢弃跳过的字节。
+<pre>
+RandomAccessFile file = new RandomAccessFile("random.log", "rw");
+int data = file.read();
+int skip = 0;
+while (data != -1) {
+    System.out.print((char) data);
+    skip += 5;
+    file.seek(skip);
+    data = file.read();
+}
+</pre>
+输出
+> TaAs staO wumadinao rt oe
+
+- getFilePointer()
+
+返回此文件中的当前偏移量。
+
+### PipedOutputStream、PipedInputStream
+
+Pipes可以用来实现在同一个JVM下面的两个线程之间的通讯，它不能用于不同JVM下的线程通讯。
+<pre>
+final PipedOutputStream pipedOutputStream = new PipedOutputStream();
+final PipedInputStream pipedInputStream = new PipedInputStream(pipedOutputStream);
+
+Thread thread1 = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        try {
+            pipedOutputStream.write("Hello world, pipe!".getBytes());
+        } catch (IOException e) {
+        }
+    }
+});
+Thread thread2 = new Thread(new Runnable() {
+    @Override
+    public void run() {
+        try {
+            int data = pipedInputStream.read();
+            while (data != -1) {
+                System.out.print((char) data);
+                data = pipedInputStream.read();
+            }
+        } catch (IOException e) {
+        }
+    }
+});
+thread1.start();
+thread2.start();
+</pre>
+PipedOutputStream和PipedInputStream调用read()和write()方法会堵塞流，如果在同一个线程中同时调用read和write方法，会造成死锁。
