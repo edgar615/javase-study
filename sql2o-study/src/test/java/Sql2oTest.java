@@ -25,7 +25,7 @@ public class Sql2oTest {
     @Before
     public void setUp() {
         PoolProperties p = new PoolProperties();
-        p.setUrl("jdbc:mysql://localhost:3306/admin");
+        p.setUrl("jdbc:mysql://127.0.0.1:3308/admin");
         p.setDriverClassName("com.mysql.jdbc.Driver");
         p.setUsername("root");
         p.setPassword("");
