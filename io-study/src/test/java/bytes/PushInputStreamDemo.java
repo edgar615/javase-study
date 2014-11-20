@@ -1,4 +1,4 @@
-package stream;
+package bytes;
 
 import java.io.ByteArrayInputStream ;
     import java.io.PushbackInputStream ;  

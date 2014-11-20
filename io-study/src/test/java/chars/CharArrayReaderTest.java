@@ -1,3 +1,5 @@
+package chars;
+
 import org.junit.Test;
 
 import java.io.CharArrayReader;

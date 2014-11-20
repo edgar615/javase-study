@@ -1,4 +1,4 @@
-package stream;
+package bytes;
 
 import org.junit.Test;
 
