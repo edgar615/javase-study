@@ -12,6 +12,7 @@
         <module>io-study</module>
         <module>dbutils-study</module>
         <module>sql2o-study</module>
+        <module>nio-study</module>
     </modules>
 
     <properties>
