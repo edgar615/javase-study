@@ -22,6 +22,7 @@ public class BlockingQueue {
         while (queue.size() == limit) {
             wait();
         }
+        //只有队列为空的时候取数据的线程才会调用wait，其他情况不需要唤醒线程
         if (queue.size() == 0) {
             notifyAll();
         }
@@ -38,6 +39,7 @@ public class BlockingQueue {
 
         }
 
+        //只有队列满的时候放数据的线程才会调用wait，其他情况不需要唤醒线程
         if (this.queue.size() == this.limit) {
 
             notifyAll();
