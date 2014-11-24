@@ -13,6 +13,7 @@
         <module>dbutils-study</module>
         <module>sql2o-study</module>
         <module>nio-study</module>
+        <module>concurrency-study</module>
     </modules>
 
     <properties>
