@@ -54,5 +54,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.edgar</groupId>
+            <artifactId>core</artifactId>
+            <version>${version}</version>
+        </dependency>
     </dependencies>
 </project>
