@@ -1,3 +1,8 @@
+ 参考
+ http://tutorials.jenkov.com/java-util-concurrent/index.html
+ http://tutorials.jenkov.com/java-concurrency/index.html
+ http://ifeve.com/java-7-concurrency-cookbook
+ 
  线程控制逃逸规则可以帮助你判断代码中对某些资源的访问是否是线程安全的。
 
 > 如果一个资源的创建，使用，销毁都在同一个线程内完成，

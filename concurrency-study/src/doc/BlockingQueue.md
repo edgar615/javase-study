@@ -2,28 +2,28 @@ BlockingQueue 方法以四种形式出现，对于不能立即满足但可能在
 
 <table>
     <tr>
-        <td></td>
-        <td>抛出异常</td>
-        <td>特殊值</td>
-        <td>阻塞</td>
-        <td>超时</td>
+        <th></th>
+        <th>抛出异常</th>
+        <th>特殊值</th>
+        <th>阻塞</th>
+        <th>超时</th>
     </tr>
     <tr>
-        <td>插入</td>
+        <th>插入</th>
         <td>add(e)</td>
         <td>offer(e)</td>
         <td>put(e)</td>
         <td>offer(e, time, unit)</td>
     </tr>
     <tr>
-        <td>移除</td>
+        <th>移除</th>
         <td>remove()</td>
         <td>poll()</td>
         <td>take()</td>
         <td>poll(time, unit)</td>
     </tr>
     <tr>
-        <td>检查</td>
+        <th>检查</th>
         <td>element()</td>
         <td>peek()</td>
         <td>不可用</td>
