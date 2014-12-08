@@ -438,3 +438,631 @@ public class FileClock3 implements Runnable {
     Fri Dec 05 16:44:49 CST 2014
     Thread interrupted
      Exiting...
+     
+### 同步工具类
+     
+#### 闭锁     
+闭锁作用相当于一扇门：在闭锁到达某一状态之前，这扇门一直是关闭的，所有的线程都会在这扇门前等待（阻塞）。只有门打开后，所有的线程才会同时继续运行。
+当闭锁到达结束位置后，将不会再改变状态，因此这扇门将永远保持打开状态。
+
+闭锁可以用来确保某些活动直到其它活动都完成后才继续执行，例如：
+
+1.确保某个计算在其所有资源都被初始化之后才继续执行。二元闭锁（只有两个状态）可以用来表示“资源R已经被初始化”，而所有需要R操作都必须先在这个闭锁上等待。
+
+2.确保某个服务在所有其他服务都已经启动之后才启动。这时就需要多个闭锁。让S在每个闭锁上等待，只有所有的闭锁都打开后才会继续运行。
+
+3.等待直到某个操作的参与者（例如，多玩家游戏中的玩家）都就绪再继续执行。在这种情况下，当所有玩家都准备就绪时，闭锁将到达结束状态。
+
+CountDownLatch 是一种灵活的闭锁实现，可以用在上述各种情况中使用。闭锁状态包含一个计数器，初始化为一个正数，表示要等待的事件数量。countDown() 方法会递减计数器，表示等待的事件中发生了一件。await() 方法则阻塞，直到计数器值变为0。
+
+*示例*
+
+<pre>
+public class Waiter implements Runnable{
+
+    CountDownLatch latch = null;
+
+    public Waiter(CountDownLatch latch) {
+        this.latch = latch;
+    }
+
+    public void run() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Waiter Released");
+    }
+}
+</pre>
+
+<pre>
+public class Decrementer implements Runnable {
+
+    CountDownLatch latch = null;
+
+    public Decrementer(CountDownLatch latch) {
+        this.latch = latch;
+    }
+
+    public void run() {
+
+        try {
+            Thread.sleep(1000);
+            this.latch.countDown();
+
+            Thread.sleep(1000);
+            this.latch.countDown();
+
+            Thread.sleep(1000);
+            this.latch.countDown();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre>
+
+<pre>
+    public static void main(String[] args) throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(3);
+
+        Waiter      waiter      = new Waiter(latch);
+        Decrementer decrementer = new Decrementer(latch);
+
+        new Thread(waiter)     .start();
+        new Thread(decrementer).start();
+
+        Thread.sleep(4000);
+    }
+</pre>
+
+*在计时测试中使用闭锁来启动和停止线程*
+
+<pre>
+public class TestHarness {
+    public long timeTasks(int nThreads, final Runnable task)
+            throws InterruptedException {
+        final CountDownLatch startGate = new CountDownLatch(1);
+        final CountDownLatch endGate = new CountDownLatch(nThreads);
+
+        for (int i = 0; i < nThreads; i++) {
+            Thread t = new Thread() {
+                public void run() {
+                    try {
+                        startGate.await();
+                        try {
+                            task.run();
+                        } finally {
+                            endGate.countDown();
+                        }
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            };
+            t.start();
+        }
+
+        long start = System.nanoTime();
+        startGate.countDown();
+        endGate.await();
+        long end = System.nanoTime();
+        return end - start;
+    }
+}
+</pre>
+
+#### FutureTask
+FutureTask也可以作为闭锁。FutureTask是通过 Callable 来实现的，相当于一种可生成结果的 Runnable ，并且可处于以下三种状态：等待运行，正在运行，运行完成。当FutureTask进入完成状态后，它会停留在这个状态上。
+
+Future.get 用来获取计算结果，如果FutureTask还未运行完成，则会阻塞。FutureTask 将计算结果从执行计算的线程传递到获取这个结果的线程，而FutureTask 的规范确保了这种传递过程能实现结果的安全发布。
+
+FutureTask在Executor框架中表示异步任务，还可以用来表示一些时间较长的计算，这些计算可以在使用计算结果之前启动。
+
+<pre>
+public class Preloader {
+    ProductInfo loadProductInfo() throws DataLoadException {
+        return null;
+    }
+
+    private final FutureTask<ProductInfo> future =
+        new FutureTask<ProductInfo>(new Callable<ProductInfo>() {
+            public ProductInfo call() throws DataLoadException {
+                return loadProductInfo();
+            }
+        });
+    private final Thread thread = new Thread(future);
+
+    public void start() { thread.start(); }
+
+    public ProductInfo get()
+            throws DataLoadException, InterruptedException {
+        try {
+            return future.get();
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof DataLoadException)
+                throw (DataLoadException) cause;
+            else
+                throw LaunderThrowable.launderThrowable(cause);
+        }
+    }
+
+    interface ProductInfo {
+    }
+}
+
+class DataLoadException extends Exception { }
+</pre>
+
+Callable表示的任务可以抛出受检查的或未受检查的异常，并且任何代码都可能抛出一个Error。无论任务代码抛出什么异常，都会被封装到一个ExecutionException中，并在Future.get中被抛出。
+这将使调用get的代码变得复杂，因为它不仅需要处理可能出现的ExecutionException（以及未检查的CancellationException），而且还由于ExecutionException是作为一个Throwable类返回的，因此处理起来并不容易。
+
+*强制将未检查的Throwable转换为RuntimeException*
+<pre>
+public class LaunderThrowable {
+
+    /**
+     * Coerce an unchecked Throwable to a RuntimeException
+     * <p/>
+     * If the Throwable is an Error, throw it; if it is a
+     * RuntimeException return it, otherwise throw IllegalStateException
+     */
+    public static RuntimeException launderThrowable(Throwable t) {
+        if (t instanceof RuntimeException)
+            return (RuntimeException) t;
+        else if (t instanceof Error)
+            throw (Error) t;
+        else
+            throw new IllegalStateException("Not unchecked", t);
+    }
+}
+</pre>
+
+#### 信号量
+
+计数信号量（Counting Semaphore）用来控制同时访问某个特定资源的操作数量，或者同时执行某个指定操作的数量。计数信号量还可以用来实现某种资源池，或者对容器施加边界。
+
+Semaphore中管理着一组虚拟的许可（permit），许可的初始数量可通过构造函数来指定。在执行操作时可以首先获得许可（只要还有剩余的许可），并在使用以后释放许可。如果没有许可，那么acquire将阻塞直到许可（或者被中断或者超时）。release方法将返回一个许可信号量。
+
+二元信号量（初始值为1的Semaphore）可以用作互斥体(mutex)，并具备不可重入的加锁语义：谁拥有这个唯一的许可，谁就拥有了互斥锁。
+
+Semaphore可以用于实现资源池。
+
+Semaphore可以将任何一种容器变成有界阻塞容器。
+
+*示例*
+
+<pre>
+public class PrintQueue {
+    private final Semaphore semaphore = new Semaphore(1);
+
+    public void printJob (Object document){
+        try {
+            semaphore.acquire();
+            long duration=(long)(Math.random()*10);
+            System.out.printf("%s: PrintQueue: Printing a Job during %d seconds\n",Thread.currentThread().getName(),duration);
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            semaphore.release();
+        }
+    }
+}
+</pre>
+
+<pre>
+public class Job implements Runnable {
+    private PrintQueue printQueue;
+
+    public Job(PrintQueue printQueue) {
+        this.printQueue = printQueue;
+    }
+
+    @Override
+    public void run() {
+        System.out.printf("%s: Going to print a job\n",Thread. currentThread().getName());
+        printQueue.printJob(new Object());
+        System.out.printf("%s: The document has been printed\n",Thread.currentThread().getName());
+    }
+}
+</pre>
+
+<pre>
+    public static void main(String[] args) {
+        PrintQueue printQueue=new PrintQueue();
+        Thread thread[]=new Thread[10];
+        for (int i=0; i<10; i++){
+            thread[i]=new Thread(new Job(printQueue),"Thread"+i);
+        }
+        for (int i=0; i<10; i++){
+            thread[i].start();
+        }
+    }
+</pre>
+
+*使用Semaphore为容器设计边界*
+
+<pre>
+public class BoundedHashSet <T> {
+    private final Set<T> set;
+    private final Semaphore sem;
+
+    public BoundedHashSet(int bound) {
+        this.set = Collections.synchronizedSet(new HashSet<T>());
+        sem = new Semaphore(bound);
+    }
+
+    public boolean add(T o) throws InterruptedException {
+        sem.acquire();
+        boolean wasAdded = false;
+        try {
+            wasAdded = set.add(o);
+            return wasAdded;
+        } finally {
+            if (!wasAdded)
+                sem.release();
+        }
+    }
+
+    public boolean remove(Object o) {
+        boolean wasRemoved = set.remove(o);
+        if (wasRemoved)
+            sem.release();
+        return wasRemoved;
+    }
+}
+</pre>
+
+#### 栅栏
+
+栅栏（Bariier）类似于闭锁，它能阻塞一组线程知道某个事件发生。栅栏与闭锁的关键区别在于，所有的线程必须同时到达栅栏位置，才能继续执行。闭锁用于等待等待时间，而栅栏用于等待线程。
+栅栏用于实现一些协议，例如几个家庭成员决定在某个地方集合：”所有人6:00在麦当劳集合，到了以后要等其他人，之后再讨论下一步要做的事”。
+
+CyclicBarrier可以使一定数量的参与方反复地在栅栏位置汇集，它在并行迭代算法中非常有用。
+
+- CyclicBarrier(int parties)  创建一个新的 CyclicBarrier，它将在给定数量的参与者（线程）处于等待状态时启动，但它不会在启动 barrier 时执行预定义的操作。
+- CyclicBarrier(int parties, Runnable barrierAction) 创建一个新的 CyclicBarrier，它将在给定数量的参与者（线程）处于等待状态时启动，并在启动 barrier 时执行给定的屏障操作，该操作由最后一个进入 barrier 的线程执行。
+  
+*示例*
+  
+<pre>
+public class CyclicBarrierRunnable implements Runnable {
+
+    CyclicBarrier barrier1 = null;
+    CyclicBarrier barrier2 = null;
+
+    public CyclicBarrierRunnable(CyclicBarrier barrier1, CyclicBarrier barrier2) {
+        this.barrier1 = barrier1;
+        this.barrier2 = barrier2;
+    }
+
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(1000);
+            System.out.println(Thread.currentThread().getName() +
+                    " waiting at barrier 1");
+            this.barrier1.await();
+
+            Thread.sleep(1000);
+            System.out.println(Thread.currentThread().getName() +
+                    " waiting at barrier 2");
+            this.barrier2.await();
+
+            System.out.println(Thread.currentThread().getName() +
+                    " done!");
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre>
+
+<pre>
+    public static void main(String[] args) {
+        Runnable barrier1Action = new Runnable() {
+            public void run() {
+                System.out.println("BarrierAction 1 executed ");
+            }
+        };
+        Runnable barrier2Action = new Runnable() {
+            public void run() {
+                System.out.println("BarrierAction 2 executed ");
+            }
+        };
+
+        CyclicBarrier barrier1 = new CyclicBarrier(2, barrier1Action);
+        CyclicBarrier barrier2 = new CyclicBarrier(2, barrier2Action);
+
+        CyclicBarrierRunnable barrierRunnable1 =
+                new CyclicBarrierRunnable(barrier1, barrier2);
+
+        CyclicBarrierRunnable barrierRunnable2 =
+                new CyclicBarrierRunnable(barrier1, barrier2);
+
+        new Thread(barrierRunnable1).start();
+        new Thread(barrierRunnable2).start();
+
+    }
+</pre>
+
+*通过CyclicBarrier协调细胞自动衍生系统中的计算*
+
+<pre>
+public class CellularAutomata {
+    private final Board mainBoard;
+    private final CyclicBarrier barrier;
+    private final Worker[] workers;
+
+    public CellularAutomata(Board board) {
+        this.mainBoard = board;
+        int count = Runtime.getRuntime().availableProcessors();
+        this.barrier = new CyclicBarrier(count,
+                new Runnable() {
+                    public void run() {
+                        mainBoard.commitNewValues();
+                    }});
+        this.workers = new Worker[count];
+        for (int i = 0; i < count; i++)
+            workers[i] = new Worker(mainBoard.getSubBoard(count, i));
+    }
+
+    private class Worker implements Runnable {
+        private final Board board;
+
+        public Worker(Board board) { this.board = board; }
+        public void run() {
+            while (!board.hasConverged()) {
+                for (int x = 0; x < board.getMaxX(); x++)
+                    for (int y = 0; y < board.getMaxY(); y++)
+                        board.setNewValue(x, y, computeValue(x, y));
+                try {
+                    barrier.await();
+                } catch (InterruptedException ex) {
+                    return;
+                } catch (BrokenBarrierException ex) {
+                    return;
+                }
+            }
+        }
+
+        private int computeValue(int x, int y) {
+            // Compute the new value that goes in (x,y)
+            return 0;
+        }
+    }
+
+    public void start() {
+        for (int i = 0; i < workers.length; i++)
+            new Thread(workers[i]).start();
+        mainBoard.waitForConvergence();
+    }
+
+    interface Board {
+        int getMaxX();
+        int getMaxY();
+        int getValue(int x, int y);
+        int setNewValue(int x, int y, int value);
+        void commitNewValues();
+        boolean hasConverged();
+        void waitForConvergence();
+        Board getSubBoard(int numPartitions, int index);
+    }
+}
+
+</pre>
+
+##### Exchanger
+Exchanger是另外一种形式的栅栏，它允许在2个线程间定义同步点，当2个线程到达这个点，他们相互交换数据类型，使用第一个线程的数据类型变成第二个的，然后第二个线程的数据类型变成第一个的。
+
+- exchange(V x) 等待另一个线程到达此交换点（除非当前线程被中断），然后将给定的对象传送给该线程，并接收该线程的对象
+- exchange(V x, long timeout, TimeUnit unit) 等待另一个线程到达此交换点（除非当前线程被中断，或者超出了指定的等待时间），然后将给定的对象传送给该线程，同时接收该线程的对象。
+
+Exchanger是一种两方（Two-Party）栅栏，各方在栅栏位置上交换数据。当两方执行不对称的操作时，Exchanger会非常有用，例如当一个线程想缓冲区写入数据，而另一个线程从缓冲区中读取数据。
+这些线程可以使用Exchanger来汇合，并将满的缓冲区与空的缓冲区交换。当两个线程通过Exchanger交换对象时，这种交换就把这两个对象安全地发布给了另一方。
+
+数据交换的时机取决于应用程序的响应需求。最简单的方案是：当缓冲区被填满时，由填充任务进行交换，当缓冲区为空时，由清空任务进行交换。
+这样会把需要交换的次数将到最低，但如果新数据的到达率不可预测，那么一些数据的处理过程就将延迟。另一个方法是，不仅当缓冲被填满时进行交换，并且当缓冲被填充到一定程度并保持一定时间后也进行交换。
+
+<pre>
+public class ExchangerRunnable implements Runnable {
+
+    private Exchanger<Object> exchanger;
+    Object    object    = null;
+
+    public ExchangerRunnable(Exchanger<Object> exchanger, Object object) {
+        this.exchanger = exchanger;
+        this.object = object;
+    }
+
+    @Override
+    public void run() {
+        Object previous = this.object;
+        try {
+            this.object = this.exchanger.exchange(this.object);
+            System.out.println(
+                    Thread.currentThread().getName() +
+                            " exchanged " + previous + " for " + this.object);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</pre>
+
+<pre>
+public static void main(String[] args) {
+    Exchanger exchanger = new Exchanger();
+
+    ExchangerRunnable exchangerRunnable1 =
+            new ExchangerRunnable(exchanger, "A");
+
+    ExchangerRunnable exchangerRunnable2 =
+            new ExchangerRunnable(exchanger, "B");
+
+    new Thread(exchangerRunnable1).start();
+    new Thread(exchangerRunnable2).start();
+}
+</pre>
+
+### 构建高效且可伸缩的结果缓存
+
+*使用HashMap和同步机制来初始化缓存*
+
+<pre>
+public class Memoizer1 <A, V> implements Computable<A, V> {
+    @GuardedBy("this") private final Map<A, V> cache = new HashMap<A, V>();
+    private final Computable<A, V> c;
+
+    public Memoizer1(Computable<A, V> c) {
+        this.c = c;
+    }
+
+    public synchronized V compute(A arg) throws InterruptedException {
+        V result = cache.get(arg);
+        if (result == null) {
+            result = c.compute(arg);
+            cache.put(arg, result);
+        }
+        return result;
+    }
+}
+
+
+interface Computable <A, V> {
+    V compute(A arg) throws InterruptedException;
+}
+
+class ExpensiveFunction
+        implements Computable<String, BigInteger> {
+    public BigInteger compute(String arg) {
+        // after deep thought...
+        return new BigInteger(arg);
+    }
+}
+</pre>
+
+Memoizer1能够确保线程安全性，但会带来一个明显的可伸缩性问题：每次只能有一个线程执行compute。
+
+*使用ConcurrentHashMap替换HashMap*
+
+<pre>
+public class Memoizer2 <A, V> implements Computable<A, V> {
+    private final Map<A, V> cache = new ConcurrentHashMap<A, V>();
+    private final Computable<A, V> c;
+
+    public Memoizer2(Computable<A, V> c) {
+        this.c = c;
+    }
+
+    public V compute(A arg) throws InterruptedException {
+        V result = cache.get(arg);
+        if (result == null) {
+            result = c.compute(arg);
+            cache.put(arg, result);
+        }
+        return result;
+    }
+}
+</pre>
+
+Memoizer2比Memoizer1有着更好的并发行为：多线程可以并发使用它。但是它在作为缓存时仍然存在一些不足——当两个线程同时调用compute时存在一个漏洞，可能会导致计算得到相同的值。
+使用memoization的情况下，这只会带来低效，因为缓存的作用是避免相同的数据被计算多次。
+
+Memoizer2的问题在于：如果某个线程启动了一个开销很大的计算，而其他线程并不知道这个计算正在进行，那么很可能会重复这个计算。
+
+*使用FutureTask的Memoizing封装器*
+
+<pre>
+public class Memoizer3<A, V> implements Computable<A, V> {
+
+	private final Map<A, FutureTask<V>> cache = new ConcurrentHashMap<A, FutureTask<V>>();
+
+	private final Computable<A, V> c;
+
+	public Memoizer3(Computable<A, V> c) {
+        this.c = c;
+	}
+
+	@Override
+	public V compute(final A arg) throws InterruptedException {
+		FutureTask<V> f = cache.get(arg);
+		if (f == null) {
+			Callable<V> eval = new Callable<V>() {
+
+				@Override
+				public V call() throws Exception {
+					return c.compute(arg);
+				}
+			};
+			FutureTask<V> ft = new FutureTask<V>(eval);
+			f = ft;
+			cache.put(arg, ft);
+			ft.run();// 调用c.compute发生在这里
+		}
+		try {
+			return f.get();
+		} catch (ExecutionException e) {
+			throw LaunderThrowable.launderThrowable(e.getCause());
+		}
+	}
+
+}
+</pre>
+
+Memoizer3表现出了非常好的并发性（基本上是源于ConcurrentHashMap高效的并发性），若结果已经计算出来，那么将立即返回。
+如果其他线程正在计算该结果，那么新到的线程将一直等待这个结果被计算出来。
+它只有一个缺陷，即仍然存在两个线程计算出相同值的漏洞。这个漏洞的发生概率要远小于Memoizer2中发生的概率。
+由于compute方法中的if代码块仍然是非原子的“先检查在执行”操作，因此两个线程仍然可能在同一时间内调用compute来计算相同的值，即二者都没有在缓存中找到期望的值，因此都开始计算。
+
+*使用ConcurrentHashMap解决“若没有则添加”的漏洞*
+
+<pre>
+public class Memoizer <A, V> implements Computable<A, V> {
+    private final ConcurrentMap<A, Future<V>> cache
+            = new ConcurrentHashMap<A, Future<V>>();
+    private final Computable<A, V> c;
+
+    public Memoizer(Computable<A, V> c) {
+        this.c = c;
+    }
+
+    public V compute(final A arg) throws InterruptedException {
+        while (true) {
+            Future<V> f = cache.get(arg);
+            if (f == null) {
+                Callable<V> eval = new Callable<V>() {
+                    public V call() throws InterruptedException {
+                        return c.compute(arg);
+                    }
+                };
+                FutureTask<V> ft = new FutureTask<V>(eval);
+                //只有在不存在缓存时才会将ft加入到map中
+                f = cache.putIfAbsent(arg, ft);
+                if (f == null) {
+                    f = ft;
+                    ft.run();
+                }
+            }
+            try {
+                return f.get();
+            } catch (CancellationException e) {
+                cache.remove(arg, f);
+            } catch (ExecutionException e) {
+                throw LaunderThrowable.launderThrowable(e.getCause());
+            }
+        }
+    }
+}
+</pre>
+
+当缓存的是Future而不是值时，将导致缓存污染问题：如果某个计算被取消或者失败，那么在计算的这个结果时将指明计算过程被取消或者失败。
+为了避免这种情况，如果Memoizer发现计算被取消，那么将把Future从缓存中移除。如果检测到RuntimeException，那么也会移除Future。
+Memoizer同样没有解决缓存逾期的问题，但它可以通过FutureTask的子类来解决。
