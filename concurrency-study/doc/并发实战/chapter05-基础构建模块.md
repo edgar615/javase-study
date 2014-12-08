@@ -227,7 +227,7 @@ public class ProducerConsumer {
         for (File root : roots)
             new Thread(new FileCrawler(queue, filter, root)).start();
 
-        for (int i = 0; i < N_CONSUMERS; i++)
+        for (int i = 0; i &lt N_CONSUMERS; i++)
             new Thread(new Indexer(queue)).start();
     }
 }
