@@ -200,30 +200,30 @@ public class VisualComponent {
 #### 失效的委托
 
 <pre>
-@NotThreadSafe
-public class NumberRange {
-    // INVARIANT: lower <= upper
-    private final AtomicInteger lower = new AtomicInteger(0);
-    private final AtomicInteger upper = new AtomicInteger(0);
-
-    public void setLower(int i) {
-        // Warning -- unsafe check-then-act
-        if (i > upper.get())
-            throw new IllegalArgumentException("can't set lower to " + i + " > upper");
-        lower.set(i);
-    }
-
-    public void setUpper(int i) {
-        // Warning -- unsafe check-then-act
-        if (i < lower.get())
-            throw new IllegalArgumentException("can't set upper to " + i + " < lower");
-        upper.set(i);
-    }
-
-    public boolean isInRange(int i) {
-        return (i >= lower.get() && i <= upper.get());
-    }
-}
+	@NotThreadSafe
+	public class NumberRange {
+	    // INVARIANT: lower &lt= upper
+	    private final AtomicInteger lower = new AtomicInteger(0);
+	    private final AtomicInteger upper = new AtomicInteger(0);
+	
+	    public void setLower(int i) {
+	        // Warning -- unsafe check-then-act
+	        if (i &gt upper.get())
+	            throw new IllegalArgumentException("can't set lower to " + i + " &gt upper");
+	        lower.set(i);
+	    }
+	
+	    public void setUpper(int i) {
+	        // Warning -- unsafe check-then-act
+	        if (i &lt lower.get())
+	            throw new IllegalArgumentException("can't set upper to " + i + " &lt lower");
+	        upper.set(i);
+	    }
+	
+	    public boolean isInRange(int i) {
+	        return (i &gt= lower.get() && i &lt= upper.get());
+	    }
+	}
 </pre>
 
 NumberRange不是线程安全的，没有维持对下界和上界进行约束的不变性条件。
