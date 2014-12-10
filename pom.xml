@@ -14,6 +14,7 @@
         <module>sql2o-study</module>
         <module>nio-study</module>
         <module>concurrency-study</module>
+        <module>networking-study</module>
     </modules>
 
     <properties>

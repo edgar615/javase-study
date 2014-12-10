@@ -17,11 +17,11 @@ public class FutureRenderer {
     }
 
     void renderPage(CharSequence source) {
-        List<ImageInfo> imageInfos = scanForImageInfo(source);
+        final List<ImageInfo> imageInfos = scanForImageInfo(source);
         Callable<List<ImageData>> task = new Callable<List<ImageData>>() {
             @Override
             public List<ImageData> call() throws Exception {
-                List<ImageData> result = new ArrayList<>();
+                List<ImageData> result = new ArrayList<ImageData>();
                 for (ImageInfo imageInfo : imageInfos)
                     result.add(imageInfo.downloadImage());
                 return result;
@@ -65,7 +65,7 @@ public class FutureRenderer {
     void renderText(CharSequence s) {
     }
     List<ImageInfo> scanForImageInfo(CharSequence s){
-        List<ImageInfo> infos = new ArrayList<>();
+        List<ImageInfo> infos = new ArrayList<ImageInfo>();
         infos.add(new ImageInfo());
         infos.add(new ImageInfo());
         infos.add(new ImageInfo());

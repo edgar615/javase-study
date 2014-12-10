@@ -19,7 +19,7 @@ public class Renderer {
     void renderPage(CharSequence source) {
         List<ImageInfo> imageInfos = scanForImageInfo(source);
         CompletionService<ImageData> completionService = new ExecutorCompletionService<ImageData>(executorService);
-        for (ImageInfo imageInfo : imageInfos) {
+        for (final ImageInfo imageInfo : imageInfos) {
             completionService.submit(new Callable<ImageData>() {
                 @Override
                 public ImageData call() throws Exception {
@@ -63,7 +63,7 @@ public class Renderer {
     void renderText(CharSequence s) {
     }
     List<ImageInfo> scanForImageInfo(CharSequence s){
-        List<ImageInfo> infos = new ArrayList<>();
+        List<ImageInfo> infos = new ArrayList<ImageInfo>();
         infos.add(new ImageInfo());
         infos.add(new ImageInfo());
         infos.add(new ImageInfo());
