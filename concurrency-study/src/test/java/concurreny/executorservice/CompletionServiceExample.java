@@ -14,8 +14,9 @@ public class CompletionServiceExample {
  
         @Override
         public Integer call() throws Exception {
-            Thread.sleep(new Random().nextInt(5000));
-            System.out.println(Thread.currentThread().getName() + "   " + i);
+            int rand = new Random().nextInt(5000);
+            Thread.sleep(rand);
+            System.out.println(Thread.currentThread().getName() + "   " + i + " sleep " + rand);
             return i;
         }
     }

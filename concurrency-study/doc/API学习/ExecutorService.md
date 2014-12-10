@@ -43,6 +43,7 @@ executorService.shutdown();
 </pre>
 
 - invokeAny(Collection<? extends Callable<T>> tasks)  执行给定的任务，如果某个任务已成功完成（也就是未抛出异常），则返回其结果。此方法一旦正常或异常返回后，则取消尚未完成的任务
+- invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) 执行给定的任务，如果在给定的超时期满前某个任务已成功完成（也就是未抛出异常），则返回其结果
 
 <pre>
 ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -73,6 +74,7 @@ executorService.shutdown();
 </pre>
 
 - invokeAll(Collection<? extends Callable<T>> tasks)  执行给定的任务，当所有任务完成时，返回保持任务状态和结果的 Future 列表。
+- invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) 执行给定的任务，当所有任务完成或超时期满时（无论哪个首先发生），返回保持任务状态和结果的 Future 列表。
 
 <pre>
 ExecutorService executorService = Executors.newSingleThreadExecutor();
