@@ -202,26 +202,26 @@ public class VisualComponent {
 <pre>
 	@NotThreadSafe
 	public class NumberRange {
-	    // INVARIANT: lower &lt= upper
+	    // INVARIANT: lower &lt;= upper
 	    private final AtomicInteger lower = new AtomicInteger(0);
 	    private final AtomicInteger upper = new AtomicInteger(0);
 	
 	    public void setLower(int i) {
 	        // Warning -- unsafe check-then-act
-	        if (i &gt upper.get())
-	            throw new IllegalArgumentException("can't set lower to " + i + " &gt upper");
+	        if (i &gt; upper.get())
+	            throw new IllegalArgumentException("can't set lower to " + i + " &gt; upper");
 	        lower.set(i);
 	    }
 	
 	    public void setUpper(int i) {
 	        // Warning -- unsafe check-then-act
-	        if (i &lt lower.get())
-	            throw new IllegalArgumentException("can't set upper to " + i + " &lt lower");
+	        if (i &lt; lower.get())
+	            throw new IllegalArgumentException("can't set upper to " + i + " &lt; lower");
 	        upper.set(i);
 	    }
 	
 	    public boolean isInRange(int i) {
-	        return (i &gt= lower.get() && i &lt= upper.get());
+	        return (i &gt;= lower.get() && i &lt;= upper.get());
 	    }
 	}
 </pre>

@@ -59,7 +59,7 @@ public class HiddenIterator {
 
 	public void addTenThings() {
 		Random r = new Random();
-		for (int i = 0; i &lt 10; i++) {
+		for (int i = 0; i &lt; 10; i++) {
 			add(r.nextInt());
 		}
 		System.out.println("DEBUG: added ten elements to " + set);
@@ -227,7 +227,7 @@ public class ProducerConsumer {
         for (File root : roots)
             new Thread(new FileCrawler(queue, filter, root)).start();
 
-        for (int i = 0; i &lt N_CONSUMERS; i++)
+        for (int i = 0; i &lt; N_CONSUMERS; i++)
             new Thread(new Indexer(queue)).start();
     }
 }
@@ -292,7 +292,7 @@ public class FileClock implements Runnable {
 
 	@Override
     public void run() {
-		for (int i = 0; i &lt 10; i++) {
+		for (int i = 0; i &lt; 10; i++) {
 			System.out.printf("%s\n", new Date());
 			try {
 				// Sleep during one second
@@ -351,7 +351,7 @@ public class FileClock2 implements Runnable {
 
 	@Override
     public void run() {
-		for (int i = 0; i &lt 10; i++) {
+		for (int i = 0; i &lt; 10; i++) {
 			System.out.printf("%s\n", new Date());
 			try {
 				// Sleep during one second
@@ -405,7 +405,7 @@ public class FileClock3 implements Runnable {
 
 	@Override
     public void run() {
-		for (int i = 0; i &lt 10; i++) {
+		for (int i = 0; i &lt; 10; i++) {
 			System.out.printf("%s\n", new Date());
             if (Thread.currentThread().isInterrupted()) {
                 System.out.println("Thread interrupted\n Exiting...");
