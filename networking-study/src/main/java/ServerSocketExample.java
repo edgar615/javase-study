@@ -10,7 +10,7 @@ import java.net.Socket;
 public class ServerSocketExample {
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(9999);
+        ServerSocket serverSocket = new ServerSocket(8888);
 
         boolean isStopped = false;
         while (!isStopped) {
