@@ -1,4 +1,4 @@
-package concurrencyinpractice.chapter10;
+package concurrencyinpractice.chapter11;
 
 /**
  * Created by Administrator on 2014/12/15.

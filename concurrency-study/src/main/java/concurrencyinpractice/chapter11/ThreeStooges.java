@@ -1,4 +1,4 @@
-package concurrencyinpractice.chapter10;
+package concurrencyinpractice.chapter11;
 
 import concurrencyinpractice.annotation.Immutable;
 

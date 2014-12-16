@@ -5,6 +5,51 @@ Semaphore 通常用于限制可以访问某些资源（物理或逻辑的）的�
 另一种情况，如果semaphore的计数器的值等于0，那么semaphore让线程进入休眠状态一直到计数器大于0。计数器的值等于0表示全部的共享资源都正被线程们使用，所以此线程想要访问就必须等到某个资源成为自由的。
 
 <pre>
+        Semaphore available = new Semaphore(1, true);
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+
+        available.release();
+        System.out.println("Released : " +available.availablePermits());
+
+        available.release();
+        System.out.println("Released : " +available.availablePermits());
+
+        available.release();
+        System.out.println("Released : " +available.availablePermits());
+
+        available.release();
+        System.out.println("Released : " +available.availablePermits());
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+
+        available.acquire();
+        System.out.println("Acquire : " +available.availablePermits());
+</pre>
+
+输出 ：
+    Acquire : 0
+    Released : 1
+    Released : 2
+    Released : 3
+    Released : 4
+    Acquire : 3
+    Acquire : 2
+    Acquire : 1
+    Acquire : 0
+
+<pre>
 public class PrintQueue {
     private final Semaphore semaphore = new Semaphore(1);
 
