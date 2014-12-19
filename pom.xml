@@ -15,6 +15,7 @@
         <module>nio-study</module>
         <module>concurrency-study</module>
         <module>networking-study</module>
+        <module>guava-study</module>
     </modules>
 
     <properties>
