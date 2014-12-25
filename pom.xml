@@ -16,6 +16,7 @@
         <module>concurrency-study</module>
         <module>networking-study</module>
         <module>guava-study</module>
+        <module>netty-study</module>
     </modules>
 
     <properties>
