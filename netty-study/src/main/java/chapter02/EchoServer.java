@@ -2,6 +2,7 @@ package chapter02;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -39,10 +40,10 @@ public class EchoServer {
                         }
                     });
             // you bind  the server and  then wait until  the bind completes,  the call  to  the  sync() method will cause  this  to block until  the server  is bound.
-            ChannelFuture future = bootstrap.bind().sync();
+            ChannelFuture cf = bootstrap.bind().sync();
             System.out.println(EchoServer.class.getName() +
-                    "started and listen on" + future.channel().localAddress());
-            future.channel().closeFuture().sync();
+                    "started and listen on" + cf.channel().localAddress());
+            cf.channel().closeFuture().sync();
         } finally {
             //shutdown the EventLoopGroup and release all resources
             group.shutdownGracefully().sync();
