@@ -1,1 +1,1 @@
-![image](https://github.com/edgar615/javase-study/tree/master/netty-study/doc/img/ByteBuf类图.png)
+![image](/img/ByteBuf类图.png)
