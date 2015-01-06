@@ -1,1 +1,1 @@
-![image](/img/ByteBuf类图.png)
+![image](img/ByteBuf类图.png)
