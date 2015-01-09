@@ -25,7 +25,7 @@ public class EchoChient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new EchoClientHandler());
+                            ch.pipeline().addLast(new EchoClientHandler(), new EchoClientHandler2());
                         }
                     });
 
