@@ -3,6 +3,7 @@ package localecho;
 import file.FileServerHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.local.LocalAddress;
 import io.netty.channel.local.LocalChannel;
@@ -46,6 +47,8 @@ public class LocalEcho {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO))
+                                    .addLast(new StringDecoder())
+                                    .addLast(new StringEncoder())
                                     .addLast(new LocalEchoServerHandler());
                         }
                     });
@@ -57,6 +60,8 @@ public class LocalEcho {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO))
+                                    .addLast(new StringDecoder())
+                                    .addLast(new StringEncoder())
                                     .addLast(new LocalEchoClientHandler());
                         }
                     });
