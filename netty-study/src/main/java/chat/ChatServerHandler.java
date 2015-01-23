@@ -33,9 +33,9 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
         // Send the received message to all channels but the current one.
         for (Channel channel : channels) {
             if (channel != ctx.channel()) {
-                ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "] " + msg + '\n');
+                channel.writeAndFlush("[" + ctx.channel().remoteAddress() + "] " + msg + '\n');
             } else {
-                ctx.writeAndFlush("[you] " + msg + "\n");
+                channel.writeAndFlush("[you] " + msg + "\n");
             }
         }
 
