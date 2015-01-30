@@ -1,7 +1,14 @@
-ChannelPipeline维护了一组ChandlerHandler的链表关系。
+ChannelPipeline维护了一组ChannelHandler的链表关系。
 ChannelPipeline实现了拦截器模式，让用户可以在ChannelPipeline中完全控制一个事件及如何处理ChannelHandler与ChannelPipeline的交互。
 
 每个通道在创建时，都会自动创建一个新的的ChannelPipeline并附加在通道上。
+
+ChannelInitializer被注册到ServerBootstrap上，当通道注册后，会调用initChannel方法将ChannelHandler加入ChannelPipeline，任何从ChannelPipeline中删除自己
+
+<pre>
+initChannel((C) ctx.channel());
+pipeline.remove(this);
+</pre>
 
 *ChannelPipeline处理I/O事件*
 

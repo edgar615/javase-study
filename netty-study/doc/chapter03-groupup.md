@@ -75,8 +75,7 @@ completed successfully.
     </tr>
     <tr>
         <td> Number of EventLoopGroups</td>
-        <td>1</td>
-        <td>2</td>
+        <td>1</td>        <td>2</td>
     </tr>        
  </table>
    

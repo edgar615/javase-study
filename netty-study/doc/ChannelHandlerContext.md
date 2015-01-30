@@ -38,3 +38,18 @@ channelInactive
 
 channelRegistered
 
+### Bootstrap、ServerBootstrap
+启动器
+
+### Channel
+通道
+
+### ChannelHandler
+通道事件处理的接口
+
+### EventLoop
+EventLoop用来处理通道的I/O事件，一个EventLoop可以处理多个通道的I/O事件。
+EventLoopGroup使用迭代器来实现一组EventLoop
+
+### ChannelFuture
+Netty中的I/O事件是异步的。ChannelFuture可以注册ChannelFutureListener监听器，监听操作是否完成的通知。

@@ -1,29 +1,37 @@
-package chapter01;
+package nio;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Administrator on 2014/12/24.
+ * Created by Administrator on 2015/1/28.
  */
-public class SocketChannelExample {
-    public static void main(String[] args) throws IOException,
-            InterruptedException {
-        int port = 1234;
+public class NioClient {
+
+    static final int remotePort = Integer.parseInt(System.getProperty("port", "8088"));
+    static final String remoteHost = System.getProperty("host", "127.0.0.1");
+
+    public static void main(String[] args) throws IOException {
+        new NioClient().run(remoteHost, remotePort);
+    }
+
+    public void run(String host, int port) throws IOException {
 
         SocketChannel channel = SocketChannel.open();
-
         channel.configureBlocking(false);
-        channel.connect(new InetSocketAddress("127.0.0.1", port));
+        channel.connect(new InetSocketAddress(host, port));
 
         while (!channel.finishConnect()) {
-            // wait
+            //wait
         }
+        System.out.println("connected");
 
         while (true) {
             ByteBuffer buffer = ByteBuffer.allocate(100);
@@ -35,14 +43,6 @@ public class SocketChannelExample {
                 }
                 buffer.clear();
             }
-
-//            ByteBuffer buffer1 = ByteBuffer.allocate(30);
-//            buffer1.put("I am Edgar".getBytes());
-//            buffer1.flip();
-//            channel.write(buffer1);
-//            buffer1.compact();
-//            TimeUnit.SECONDS.sleep(5);
-
             if (count < 0) {
                 channel.close();
             }

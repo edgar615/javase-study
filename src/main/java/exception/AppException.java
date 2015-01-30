@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class AppException extends RuntimeException {
 
-    private List<InfoItem> infoItems = new ArrayList<>();
+    private List<InfoItem> infoItems = new ArrayList<InfoItem>();
 
     private static class InfoItem {
         public final String context;

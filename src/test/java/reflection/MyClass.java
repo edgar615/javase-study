@@ -9,7 +9,7 @@ import java.util.List;
 @MyAnnotation(name="someName",  value = "Hello World")
 public class MyClass {
 
-    public List<String> stringList = new ArrayList<>();
+    public List<String> stringList = new ArrayList<String>();
 
     public List<String> getStringList(){
         return this.stringList;

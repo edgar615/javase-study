@@ -10,12 +10,12 @@ import io.netty.util.CharsetUtil;
 /**
  * Created by Administrator on 2014/12/30.
  */
-public class EchoClientHandler2 extends ChannelHandlerAdapter {
+public class EchoClientHandler3 extends ChannelHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
-        System.out.println("Client received: " + ByteBufUtil.hexDump(buf));
+        System.out.println("Client received: " + buf.toString(CharsetUtil.UTF_8));
     }
 
 }
