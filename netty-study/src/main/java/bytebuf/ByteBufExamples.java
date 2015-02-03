@@ -1,4 +1,4 @@
-package chapter05;
+package bytebuf;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;

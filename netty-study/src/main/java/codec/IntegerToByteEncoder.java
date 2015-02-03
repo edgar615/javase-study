@@ -1,4 +1,4 @@
-package chapter07;
+package codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

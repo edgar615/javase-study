@@ -1,17 +1,19 @@
-package chapter07;
+package codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ReplayingDecoder;
+import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
 /**
  * Created by Administrator on 2014/12/30.
  */
-public class ToIntegerDecoder2 extends ReplayingDecoder<Integer> {
+public class ByteToCharDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        out.add(in.readInt());
+        if (in.readableBytes() >= 2) {
+            out.add(Character.valueOf(in.readChar()));
+        }
     }
 }

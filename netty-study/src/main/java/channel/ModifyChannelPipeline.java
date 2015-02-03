@@ -2,6 +2,7 @@ package channel;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
 
 public class ModifyChannelPipeline {
 
@@ -11,6 +12,8 @@ public class ModifyChannelPipeline {
         ch.addLast("handler1", firstHandler);
         ch.addFirst("handler2", new SecondHandler());
         ch.addLast("handler3", new ThirdHandler());
+
+        ch.addLast(new DefaultEventExecutorGroup(10), new ThirdHandler());
 
         ch.remove("handler3");
         ch.remove(firstHandler);

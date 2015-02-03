@@ -1,4 +1,4 @@
-package chapter06;
+package channel;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
