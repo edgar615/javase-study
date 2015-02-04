@@ -30,7 +30,7 @@ public class AbsIntegerEncoderTest {
 //        Assert.assertNull(channel.readOutbound());
 
         for (int i = 1; i < 10; i ++) {
-            Assert.assertEquals(i, channel.readOutbound());
+            Assert.assertEquals(i, channel.readOutbound(), 0);
         }
         Assert.assertNull(channel.readOutbound());
     }
