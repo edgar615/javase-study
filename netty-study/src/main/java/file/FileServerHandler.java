@@ -19,7 +19,7 @@ public class FileServerHandler extends SimpleChannelInboundHandler<String> {
         RandomAccessFile raf = null;
         long length = -1;
         try {
-            raf = new RandomAccessFile("d:/1.txt", "r");
+            raf = new RandomAccessFile(msg, "r");
             length = raf.length();
         } catch (Exception e) {
             ctx.writeAndFlush("ERR: " + e.getClass().getSimpleName() + ": " + e.getMessage() + '\n');

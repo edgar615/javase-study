@@ -27,7 +27,7 @@ public class BootstrapServer {
                         buf.clear();
                     }
                 });
-        ChannelFuture ch = bootstrap.bind(new InetSocketAddress(8080));
+        ChannelFuture ch = bootstrap.bind(new InetSocketAddress(8088));
         ch.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {

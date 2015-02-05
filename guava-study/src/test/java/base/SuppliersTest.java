@@ -7,6 +7,7 @@ import com.google.common.base.Suppliers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -108,6 +109,7 @@ public class SuppliersTest {
         Function<Supplier<User>, User>  supplier = Suppliers.supplierFunction();
         User user2 = supplier.apply(Suppliers.ofInstance(user));
         Assert.assertSame(user, user2);
+
     }
 
     class User {
