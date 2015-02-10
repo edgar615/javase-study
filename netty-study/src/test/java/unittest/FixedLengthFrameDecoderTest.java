@@ -1,8 +1,9 @@
-package chapter10;
+package unittest;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,16 +13,16 @@ import org.junit.Test;
 public class FixedLengthFrameDecoderTest {
 
     @Test
-    public void testFramesDecoded() {
+    public void testFramesDecoded1() {
         //1. Create a new ByteBuf and fill it with bytes
         ByteBuf buf = Unpooled.buffer();
-        for (int i = 0; i < 9; i ++) {
+        for (int i = 0; i < 9; i++) {
             buf.writeByte(i);
         }
         ByteBuf input = buf.duplicate();
 
         //2. Create a new EmbeddedByteChannel and feed in the FixedLengthFrameDecoder to test it
-        EmbeddedChannel channel = new EmbeddedChannel(new FixedLengthFrameDecoder(3));
+        EmbeddedChannel channel = new EmbeddedChannel(new FixedLengthFrameDecode(3));
 
         //write
         //4. Write bytes to it and check if they produced a new frame (message)
@@ -41,7 +42,7 @@ public class FixedLengthFrameDecoderTest {
     @Test
     public void testFramesDecoded2() {
         ByteBuf buf = Unpooled.buffer();
-        for (int i = 0; i < 9; i ++) {
+        for (int i = 0; i < 9; i++) {
             buf.writeByte(i);
         }
         ByteBuf input = buf.duplicate();

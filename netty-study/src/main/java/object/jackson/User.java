@@ -2,13 +2,13 @@ package object.jackson;
 
 import java.io.Serializable;
 
-class User implements Serializable {
+public class User implements Serializable {
     private String username;
 
-    User() {
+    public User() {
     }
 
-    User(String username) {
+    public User(String username) {
         this.username = username;
     }
 
