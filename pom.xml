@@ -17,6 +17,7 @@
         <module>networking-study</module>
         <module>guava-study</module>
         <module>netty-study</module>
+        <module>netty-tutorial</module>
     </modules>
 
     <properties>
