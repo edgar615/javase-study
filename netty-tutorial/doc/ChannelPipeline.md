@@ -63,3 +63,58 @@ tail.prev = head;
 
 
 # callHandlerAdded(final DefaultChannelHandlerContext ctx)
+
+# findInvoker(EventExecutorGroup group)
+childInvokers中取出group对应的invoker，如果不存在对应的invoker则创建一个
+
+# generateName(ChannelHandler handler)
+根据handler生成对应的名字
+nameCaches用来减少锁的竞争
+
+<pre>
+        WeakHashMap<Class<?>, String> cache = nameCaches[(int) (Thread.currentThread().getId() % nameCaches.length)];
+        Class<?> handlerType = handler.getClass();
+        String name;
+        synchronized (cache) {
+            name = cache.get(handlerType);
+            if (name == null) {
+                name = StringUtil.simpleClassName(handlerType) + "#0";
+                cache.put(handlerType, name);
+            }
+        }
+</pre>
+
+# Inbound Event:
+    调用header
+
+   fireChannelRegistered()
+   fireChannelActive()
+   fireChannelRead(Object)
+   fireChannelReadComplete()
+   fireExceptionCaught(Throwable)
+   fireUserEventTriggered(Object)
+   fireChannelWritabilityChanged()
+   fireChannelInactive()
+
+
+# Outbound Event:
+    调用tail
+
+      bind(SocketAddress, ChannelPromise)
+      connect(SocketAddress, SocketAddress, ChannelPromise)
+      write(Object, ChannelPromise)
+      flush()
+      read()
+      disconnect(ChannelPromise)
+      close(ChannelPromise)
+
+# HeadHandler对Inbound事件的调用
+
+<pre>
+    @Override
+    public ChannelHandlerContext fireChannelRead(Object msg) {
+        DefaultChannelHandlerContext next = findContextInbound(MASK_CHANNEL_READ);
+        next.invoker.invokeChannelRead(next, msg);
+        return this;
+    }
+</pre>
