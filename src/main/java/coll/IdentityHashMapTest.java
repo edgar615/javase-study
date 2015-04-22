@@ -15,7 +15,7 @@ public class IdentityHashMapTest {
        Map<String, String> hashMap = new HashMap<String, String>();
        hashMap.put(s1, "s1");
        hashMap.put(s2, "s2");
-       assert hashMap.size() == 1;
+       System.out.println(hashMap);
 
        Map<String, String> identityHashMap = new IdentityHashMap<String, String>();
        identityHashMap.put(s1, "s1");
