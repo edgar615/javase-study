@@ -18,6 +18,7 @@
         <module>guava-study</module>
         <module>netty-study</module>
         <module>netty-tutorial</module>
+        <module>commons-vfs2-study</module>
     </modules>
 
     <properties>

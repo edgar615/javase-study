@@ -1,7 +1,5 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/5/14.
@@ -44,5 +42,14 @@ public class JiFen {
         long l = 1306061211;
         System.out.println(new Date(l));
         System.out.println(System.currentTimeMillis());
+
+        List<Integer> list1 = new ArrayList<>();
+        list1.add(1);
+        list1.add(2);
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "1");
+        map.put("2", "2");
+        System.out.println(new ArrayList<>().size());
+        System.out.println(new HashMap<>().size());
     }
 }
