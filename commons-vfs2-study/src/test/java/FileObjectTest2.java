@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 public class FileObjectTest2 {
     @Test
     public void testFileObject() throws IOException, InterruptedException {
-        BlockingQueue<FileObject> queue = new LinkedBlockingDeque<>(10);
+        BlockingQueue<Command> queue = new LinkedBlockingDeque<>(10);
         ExecutorService exec = Executors.newCachedThreadPool();
         //producer
         exec.submit(new FileFinderRunnable(queue));
