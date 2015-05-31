@@ -17,7 +17,7 @@
         <module>networking-study</module>
         <module>guava-study</module>
         <module>netty-study</module>
-        <module>netty-tutorial</module>
+        <module>core</module>
         <module>commons-vfs2-study</module>
     </modules>
 
