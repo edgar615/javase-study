@@ -2,10 +2,10 @@ package com.generated.code.domain;
 
 import com.edgar.core.jdbc.Persistable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.groups.Default;
 
 /**

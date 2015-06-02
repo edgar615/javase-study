@@ -18,6 +18,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Edgar on 14-11-20.
@@ -55,7 +57,6 @@ public class JdbcRepositoryTest {
 
         jdbcRepository = new CompanyConfigRepository();
         jdbcRepository.setDataSource(dataSource);
-        jdbcRepository.setSql2o(sql2o);
 
         for (int i = 0; i < 10; i++) {
             CompanyConfig companyConfig = new CompanyConfig();
@@ -63,17 +64,17 @@ public class JdbcRepositoryTest {
             companyConfig.setCompanyId(i);
             companyConfig.setConfigKey("key" + i);
             companyConfig.setConfigValue("value" + i);
-            jdbcRepository.insert(CompanyConfigDB.INSERT_SQL, companyConfig);
+            jdbcRepository.insert(CompanyConfigDB.NAMED_INSERT_SQL, companyConfig);
 
         }
 
     }
 
-//    @After
-//    public void tearDown() {
-//        String sql = "drop table company_config";
-//        jdbcTemplate.execute(sql);
-//    }
+    @After
+    public void tearDown() {
+        String sql = "drop table company_config";
+        jdbcTemplate.execute(sql);
+    }
 
     @Test
     public void testInsert() {
@@ -84,21 +85,7 @@ public class JdbcRepositoryTest {
         companyConfig.setCompanyId(11);
         companyConfig.setConfigKey("key");
         companyConfig.setConfigValue("value");
-        int result = jdbcRepository.insert(CompanyConfigDB.INSERT_SQL, companyConfig);
-        Assert.assertEquals(1, result);
-        Assert.assertEquals(count + 1, count());
-    }
-
-    @Test
-    public void testInsert2() {
-        int count = count();
-
-        CompanyConfig companyConfig = new CompanyConfig();
-        companyConfig.setConfigId(11);
-        companyConfig.setCompanyId(11);
-        companyConfig.setConfigKey("key");
-        companyConfig.setConfigValue("value");
-        int result = jdbcRepository.insert2(CompanyConfigDB.INSERT_SQL, companyConfig);
+        int result = jdbcRepository.insert(CompanyConfigDB.NAMED_INSERT_SQL, companyConfig);
         Assert.assertEquals(1, result);
         Assert.assertEquals(count + 1, count());
     }
@@ -111,7 +98,7 @@ public class JdbcRepositoryTest {
         companyConfig.setCompanyId(11);
         companyConfig.setConfigKey("key");
         companyConfig.setConfigValue("value");
-        int result = jdbcRepository.updateByPrimaryKey(CompanyConfigDB.UPDATE_BY_PK_SQL, companyConfig);
+        int result = jdbcRepository.updateByPrimaryKey(CompanyConfigDB.NAMED_UPDATE_BY_PK_SQL, companyConfig);
         Assert.assertEquals(0, result);
 
         companyConfig = new CompanyConfig();
@@ -119,7 +106,7 @@ public class JdbcRepositoryTest {
         companyConfig.setCompanyId(1);
         companyConfig.setConfigKey("New Key");
         companyConfig.setConfigValue("New Value");
-        result = jdbcRepository.updateByPrimaryKey(CompanyConfigDB.UPDATE_BY_PK_SQL, companyConfig);
+        result = jdbcRepository.updateByPrimaryKey(CompanyConfigDB.NAMED_UPDATE_BY_PK_SQL, companyConfig);
         Assert.assertEquals(1, result);
 
         companyConfig = jdbcTemplate.queryForObject("select * from company_config where config_id = 1", CompanyConfigDB.ROW_MAPPER);
@@ -129,24 +116,14 @@ public class JdbcRepositoryTest {
     @Test
     public void testDeleteByPrimaryKey() {
         int count = count();
-
-        CompanyConfig companyConfig = new CompanyConfig();
-        companyConfig.setConfigId(11);
-        companyConfig.setCompanyId(11);
-        companyConfig.setConfigKey("key");
-        companyConfig.setConfigValue("value");
-        int result = jdbcRepository.deleteByPrimaryKey(CompanyConfigDB.DELETE_BY_PK_SQL, companyConfig);
+        int result = jdbcRepository.deleteByPrimaryKey(11);
         Assert.assertEquals(0, result);
         Assert.assertEquals(count, count());
 
-        companyConfig = new CompanyConfig();
-        companyConfig.setConfigId(1);
-        companyConfig.setCompanyId(1);
-        companyConfig.setConfigKey("New Key");
-        companyConfig.setConfigValue("New Value");
-        result = jdbcRepository.deleteByPrimaryKey(CompanyConfigDB.DELETE_BY_PK_SQL, companyConfig);
+        result = jdbcRepository.deleteByPrimaryKey(1);
         Assert.assertEquals(1, result);
         Assert.assertEquals(count - 1, count());
+
     }
 
 //    @Test
