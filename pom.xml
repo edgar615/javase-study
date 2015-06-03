@@ -19,6 +19,7 @@
         <module>netty-study</module>
         <module>core</module>
         <module>commons-vfs2-study</module>
+        <module>mybatis-study</module>
     </modules>
 
     <properties>

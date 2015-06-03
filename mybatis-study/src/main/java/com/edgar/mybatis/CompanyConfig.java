@@ -1,7 +1,5 @@
-package com.generated.code.domain;
+package com.edgar.mybatis;
 
-import com.edgar.core.jdbc.Persistable;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +17,7 @@ public class CompanyConfig implements Persistable<Integer>
 	private static final long serialVersionUID = 1L;
 
 	@NotNull (groups = { Default.class, Default.class })
-	private Integer configId;
+    private Integer configId;
 
 	private Integer companyId;
 
@@ -93,12 +91,6 @@ public class CompanyConfig implements Persistable<Integer>
 	public String getDescription ()
 	{
 		return this.description;
-	}
-
-	@Override
-	public String toString () 
-	{
-		return ToStringBuilder.reflectionToString (this); 
 	}
 
 	/* START Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/

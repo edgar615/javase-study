@@ -70,11 +70,11 @@ public class JdbcRepositoryTest {
 
     }
 
-    @After
-    public void tearDown() {
-        String sql = "drop table company_config";
-        jdbcTemplate.execute(sql);
-    }
+//    @After
+//    public void tearDown() {
+//        String sql = "drop table company_config";
+//        jdbcTemplate.execute(sql);
+//    }
 
     @Test
     public void testInsert() {
