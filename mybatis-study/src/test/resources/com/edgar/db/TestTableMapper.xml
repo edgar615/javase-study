@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edgar.mapper.TestTableMapper">
+	<resultMap id="TestTableResultMap" type="TestTable">
+		<result column="test_code" property="testCode" />
+		<result column="dict_name" property="dictName" />
+		<result column="parent_code" property="parentCode" />
+		<result column="sorted" property="sorted" />
+	</resultMap>
+
+	<insert id="insert" parameterType="TestTable">
+		insert into 
+		test_table(test_code, dict_name, sorted) 
+		values(${testCode}, ${dictName}, ${sorted})
+	</insert>
+
+	<!-- START 写在START和END中间的代码不会被替换 -->
+
+	<!-- END 写在START和END中间的代码不会被替换-->
+
+</mapper>

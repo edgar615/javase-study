@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edgar.mapper.CompanyConfigMapper">
+    <resultMap id="CompanyConfigResultMap" type="CompanyConfig">
+        <result column="config_id" property="configId" />
+        <result column="company_id" property="companyId" />
+        <result column="config_key" property="configKey" />
+        <result column="config_value" property="configValue" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <insert id="insert" parameterType="CompanyConfig">
+		insert into 
+		company_config(config_id, company_id, config_key, config_value, description) 
+		values(${configId}, ${companyId}, ${configKey}, ${configValue}, ${description})
+	</insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="int">
+		delete from company_config 
+		where config_id = #{id}
+	</delete>
+
+    <update id="updateByPrimaryKey" parameterType="CompanyConfig">
+		update company_config set  
+		config_id = ${configId}, 
+		company_id = ${companyId}, 
+		config_key = ${configKey}, 
+		config_value = ${configValue}, 
+		description = ${description} 
+		where config_id = #{configId}
+	</update>
+
+    <update id="updateByPrimaryKeyWithLock" parameterType="CompanyConfig">
+		update company_config set  
+		config_id = ${configId}, 
+		company_id = ${companyId}, 
+		config_key = ${configKey}, 
+		config_value = ${configValue}, 
+		description = ${description} 
+		where config_id = #{configId}
+	</update>
+
+    <select id="selectByPrimaryKey" resultMap="CompanyConfigResultMap" parameterType="int">
+		select config_id, company_id, config_key, config_value, description 
+		from company_config 
+		where config_id = #{id}
+	</select>
+
+    <!-- START 写在START和END中间的代码不会被替换 -->
+    <select id="count" resultType="int">
+        select count(*) from company_config
+    </select>
+    <!-- END 写在START和END中间的代码不会被替换-->
+
+</mapper>

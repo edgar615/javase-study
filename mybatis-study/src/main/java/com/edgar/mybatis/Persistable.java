@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @param <ID> the type of the identifier
  * @author Oliver Gierke
  */
-public interface Persistable<ID extends Serializable> extends Serializable {
+public interface Persistable<ID> extends Serializable {
 
 	/**
      * Returns the id of the entity.

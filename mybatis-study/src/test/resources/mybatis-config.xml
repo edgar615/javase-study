@@ -5,7 +5,7 @@
 <configuration>
     <typeAliases>
         <!--<package name="com.edgar.mybatis" />-->
-        <typeAlias alias="CompanyConfig" type="com.edgar.mybatis.CompanyConfig"/>
+        <typeAlias alias="CompanyConfig" type="com.edgar.domain.CompanyConfig"/>
     </typeAliases>
 
     <environments default="development">
@@ -20,6 +20,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="CompanyConfigMapper.xml"/>
+        <mapper resource="com/edgar/db/CompanyConfigMapper.xml"/>
     </mappers>
 </configuration>
