@@ -1,6 +1,6 @@
 package com.edgar.mapper;
 
-import com.edgar.core.jdbc.BaseMapper;
+import com.edgar.core.repository.BaseMapper;
 import com.edgar.domain.CompanyConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,10 @@ public interface CompanyConfigMapper extends BaseMapper<CompanyConfig, Integer>
 
 	/* START Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/
     int count();
+
+    void createTable();
+
+    void dropTable();
 	/* END Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/
 
 }

@@ -1,6 +1,6 @@
 package com.edgar.mapper;
 
-import com.edgar.core.jdbc.BaseMapper;
+import com.edgar.core.repository.BaseMapper;
 import com.edgar.domain.Test2Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,11 @@ public interface Test2TableMapper extends BaseMapper<Test2Table, Map<String, Obj
 	final static Logger logger = LoggerFactory.getLogger(Test2TableMapper.class);
 
 	/* START Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/
+    int count();
 
+    void createTable();
+
+    void dropTable();
 	/* END Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/
 
 }

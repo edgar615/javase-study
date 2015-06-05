@@ -1,5 +1,6 @@
 package com.edgar.core.jdbc;
 
+import com.edgar.core.repository.Persistable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -7,8 +8,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015/5/29.

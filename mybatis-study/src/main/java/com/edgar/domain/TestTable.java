@@ -1,6 +1,6 @@
 package com.edgar.domain;
 
-import com.edgar.mybatis.Persistable;
+import com.edgar.core.repository.Persistable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 

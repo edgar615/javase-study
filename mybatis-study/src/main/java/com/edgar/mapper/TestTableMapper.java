@@ -1,6 +1,6 @@
 package com.edgar.mapper;
 
-import com.edgar.core.jdbc.BaseMapper;
+import com.edgar.core.repository.BaseMapper;
 import com.edgar.domain.TestTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

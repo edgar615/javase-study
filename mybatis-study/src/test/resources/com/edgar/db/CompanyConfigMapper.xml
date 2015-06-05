@@ -12,35 +12,35 @@
     </resultMap>
 
     <insert id="insert" parameterType="CompanyConfig">
-		insert into 
-		company_config(config_id, company_id, config_key, config_value, description) 
-		values(${configId}, ${companyId}, ${configKey}, ${configValue}, ${description})
-	</insert>
+        insert into
+        company_config(config_id, company_id, config_key, config_value, description)
+        values(#{configId}, #{companyId}, #{configKey}, #{configValue}, #{description})
+    </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="int">
-		delete from company_config 
-		where config_id = #{id}
-	</delete>
+        delete from company_config
+        where config_id = #{id}
+    </delete>
 
     <update id="updateByPrimaryKey" parameterType="CompanyConfig">
-		update company_config set  
-		config_id = ${configId}, 
-		company_id = ${companyId}, 
-		config_key = ${configKey}, 
-		config_value = ${configValue}, 
-		description = ${description} 
-		where config_id = #{configId}
-	</update>
+        update company_config set
+        config_id = #{configId},
+        company_id = #{companyId},
+        config_key = #{configKey},
+        config_value = #{configValue},
+        description = #{description}
+        where config_id = #{configId}
+    </update>
 
     <update id="updateByPrimaryKeyWithLock" parameterType="CompanyConfig">
-		update company_config set  
-		config_id = ${configId}, 
-		company_id = ${companyId}, 
-		config_key = ${configKey}, 
-		config_value = ${configValue}, 
-		description = ${description} 
-		where config_id = #{configId}
-	</update>
+        update company_config set
+        config_id = #{configId},
+        company_id = #{companyId},
+        config_key = #{configKey},
+        config_value = #{configValue},
+        description = #{description}
+        where config_id = #{configId}
+    </update>
 
     <select id="selectByPrimaryKey" resultMap="CompanyConfigResultMap" parameterType="int">
 		select config_id, company_id, config_key, config_value, description 
@@ -52,6 +52,19 @@
     <select id="count" resultType="int">
         select count(*) from company_config
     </select>
+    <update id="createTable">
+        create table `company_config` (
+          `config_id` int(11) not null,
+          `company_id` int(11) default null,
+          `config_key` varchar(16) not null,
+          `config_value` varchar(16) not null,
+          `description` varchar(128) default null,
+          primary key (`config_id`)
+        ) engine=innodb default charset=utf8 comment='如果company_id=-1,则表示是全局配置项';
+    </update>
+    <update id="dropTable">
+        drop table if exists `company_config`;
+    </update>
     <!-- END 写在START和END中间的代码不会被替换-->
 
 </mapper>

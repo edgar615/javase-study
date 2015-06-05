@@ -4,10 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <!--<package name="com.edgar.mybatis" />-->
-        <typeAlias alias="CompanyConfig" type="com.edgar.domain.CompanyConfig"/>
+        <package name="com.edgar.domain" />
+       <!-- <typeAlias alias="CompanyConfig" type="com.edgar.domain.CompanyConfig"/>
+        <typeAlias alias="Test2Table" type="com.edgar.domain.Test2Table"/>-->
     </typeAliases>
 
+    <plugins>
+        <plugin interceptor="com.edgar.mybatis.PaginationInterceptor" />
+    </plugins>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -21,5 +25,6 @@
     </environments>
     <mappers>
         <mapper resource="com/edgar/db/CompanyConfigMapper.xml"/>
+        <mapper resource="com/edgar/db/Test2TableMapper.xml"/>
     </mappers>
 </configuration>

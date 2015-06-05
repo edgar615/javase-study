@@ -1,4 +1,4 @@
-package com.edgar.mybatis;
+package com.edgar.core.repository;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public interface Persistable<ID> extends Serializable {
 
 	/**
      * Returns the id of the entity.
-     *
+	 * 
 	 * @return the id
 	 */
 	ID getId();
