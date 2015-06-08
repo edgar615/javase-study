@@ -1,5 +1,7 @@
 package com.edgar.mybatis;
 
+import com.edgar.core.jdbc.Pagination;
+import com.edgar.core.repository.PaginationHelper;
 import com.edgar.domain.CompanyConfig;
 import com.edgar.mapper.CompanyConfigMapper;
 import org.apache.ibatis.io.Resources;
@@ -13,6 +15,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/6/3.
@@ -41,6 +46,7 @@ public class CompanyConfigMapperTest {
             mapper.insert(companyConfig);
 
         }
+        session.commit();
     }
 
     @After
@@ -94,6 +100,43 @@ public class CompanyConfigMapperTest {
         result = mapper.deleteByPrimaryKey(200);
         Assert.assertEquals(0, result);
         Assert.assertEquals(count - 1, mapper.count());
+    }
+
+    @Test
+    public void testDynamicCount() throws IOException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("configValue", "value1");
+//        map.put("configKey", "0001");
+        int count = mapper.count(map);
+        map.put("configKey", "key14");
+        count = mapper.count(map);
+        Assert.assertEquals(0, count);
+    }
+
+    @Test
+    public void testDynamicQuery() throws IOException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("configValue", "value1");
+//        map.put("configKey", "0001");
+        List<CompanyConfig> companyConfigs = mapper.query(map);
+        Assert.assertEquals(1, companyConfigs.size());
+        map.put("configKey", "key14");
+        companyConfigs = mapper.query(map);
+        Assert.assertEquals(0, companyConfigs.size());
+    }
+
+    @Test
+    public void testPagination() {
+        Map<String, Object> map = new HashMap<>();
+//        map.put("configValue", "value1");
+        Pagination<CompanyConfig> pagination = PaginationHelper.fetchPage(mapper, map, 1, 3);
+
+        Assert.assertEquals(1, pagination.getPage());
+        Assert.assertEquals(3, pagination.getPageSize());
+        Assert.assertEquals(4, pagination.getPageList().size());
+        Assert.assertEquals(4, pagination.getTotalPages());
+        Assert.assertEquals(10, pagination.getTotalRecords());
+        Assert.assertEquals(3, pagination.getRecords().size());
     }
 
 }
