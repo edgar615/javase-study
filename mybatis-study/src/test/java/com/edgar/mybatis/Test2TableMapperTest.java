@@ -2,8 +2,7 @@ package com.edgar.mybatis;
 
 import com.edgar.domain.CompanyConfig;
 import com.edgar.domain.Test2Table;
-import com.edgar.mapper.CompanyConfigMapper;
-import com.edgar.mapper.Test2TableMapper;
+import com.edgar.repository.Test2TableMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -20,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2015/6/3.
- */
+* Created by Administrator on 2015/6/3.
+*/
 public class Test2TableMapperTest {
 
     SqlSession session;

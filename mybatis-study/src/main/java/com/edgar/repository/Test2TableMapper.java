@@ -1,10 +1,10 @@
-package com.edgar.mapper;
+package com.edgar.repository;
 
 import com.edgar.core.repository.BaseMapper;
-import com.edgar.domain.CompanyConfig;
-import org.slf4j.Logger;
+import org.springframework.stereotype.Repository;
 import org.slf4j.LoggerFactory;
-
+import org.slf4j.Logger;
+import com.edgar.domain.Test2Table;
 import java.util.Map;
 
 /**
@@ -12,10 +12,11 @@ import java.util.Map;
  *
  * @author Spring Data Jdbc Code Generator
  */
-public interface CompanyConfigMapper extends BaseMapper<CompanyConfig, Integer>
+@Repository
+public interface Test2TableMapper extends BaseMapper<Test2Table, Map<String, Object>>
 {
 
-	final static Logger logger = LoggerFactory.getLogger(CompanyConfigMapper.class);
+	final static Logger logger = LoggerFactory.getLogger (Test2TableMapper.class);
 
 	/* START Do not remove/edit this line. CodeGenerator will preserve any code between start and end tags.*/
     int count();

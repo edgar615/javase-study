@@ -21,7 +21,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/edgar/db/CompanyConfigMapper.xml"/>
-        <mapper resource="com/edgar/db/Test2TableMapper.xml"/>
+        <mapper resource="com/edgar/repository/db/CompanyConfigMapper.xml"/>
+        <mapper resource="com/edgar/repository/db/Test2TableMapper.xml"/>
     </mappers>
 </configuration>

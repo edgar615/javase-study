@@ -1,4 +1,4 @@
-package com.edgar.mybatis;
+package com.edgar.mybatis.spring;
 
 import com.edgar.core.jdbc.Pagination;
 import com.edgar.core.repository.PaginationHelper;
@@ -12,6 +12,14 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,12 +27,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Administrator on 2015/6/3.
- */
-public class CompanyConfigMapperTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:dao.xml"})
+//@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
+@TransactionConfiguration(defaultRollback = true)
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
+public class CompanyConfigMapperSpringTest {
 
-    SqlSession session;
+    @Autowired
     CompanyConfigMapper mapper;
 
     @Before
@@ -32,8 +43,6 @@ public class CompanyConfigMapperTest {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        session = sqlSessionFactory.openSession();
-        mapper = session.getMapper(CompanyConfigMapper.class);
 
         mapper.createTable();
 
@@ -46,13 +55,11 @@ public class CompanyConfigMapperTest {
             mapper.insert(companyConfig);
 
         }
-        session.commit();
     }
 
     @After
     public void tearDown() {
         mapper.dropTable();
-        session.close();
     }
 
     @Test
