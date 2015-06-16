@@ -1,5 +1,6 @@
 package com.edgar.core.jdbc;
 
+import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.Persistable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,9 +1,5 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.jdbc.Pagination;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

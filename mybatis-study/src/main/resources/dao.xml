@@ -31,6 +31,10 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
     <tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean id="transactionManager"

@@ -1,6 +1,6 @@
 package com.edgar.mybatis;
 
-import com.edgar.core.jdbc.Pagination;
+import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.PaginationHelper;
 import com.edgar.domain.CompanyConfig;
 import com.edgar.repository.CompanyConfigMapper;
@@ -139,4 +139,24 @@ public class CompanyConfigMapperTest {
         Assert.assertEquals(3, pagination.getRecords().size());
     }
 
+    @Test
+    public void testPagination2() {
+        Map<String, Object> map = new HashMap<>();
+//        map.put("configValue", "value1");
+        Pagination<CompanyConfig> pagination = PaginationHelper.fetchPage2(session, map, 1, 3, "com.edgar.repository.CompanyConfigMapper.count", "com.edgar.repository.CompanyConfigMapper.query");
+
+        Assert.assertEquals(1, pagination.getPage());
+        Assert.assertEquals(3, pagination.getPageSize());
+        Assert.assertEquals(4, pagination.getPageList().size());
+        Assert.assertEquals(4, pagination.getTotalPages());
+        Assert.assertEquals(10, pagination.getTotalRecords());
+        Assert.assertEquals(3, pagination.getRecords().size());
+    }
+
+    @Test
+    public void testSelectByPrimaryKey2() throws IOException {
+        CompanyConfig config = session.selectOne("com.edgar.repository.CompanyConfigMapper.selectByPrimaryKey", 1);
+        Assert.assertEquals("key1", config.getConfigKey());
+
+    }
 }

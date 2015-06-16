@@ -1,11 +1,11 @@
 package com.edgar.mybatis.spring;
 
-import com.edgar.core.jdbc.Pagination;
+import com.edgar.core.repository.PageMapper;
+import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.PaginationHelper;
 import com.edgar.domain.CompanyConfig;
 import com.edgar.repository.CompanyConfigMapper;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.After;
@@ -38,12 +38,11 @@ public class CompanyConfigMapperSpringTest {
     @Autowired
     CompanyConfigMapper mapper;
 
+    @Autowired
+    PageMapper pageMapper;
+
     @Before
     public void setUp() throws IOException {
-        String resource = "mybatis-config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
         mapper.createTable();
 
         for (int i = 0; i < 10; i++) {
@@ -146,4 +145,17 @@ public class CompanyConfigMapperSpringTest {
         Assert.assertEquals(3, pagination.getRecords().size());
     }
 
+    @Test
+    public void testPagination2() {
+        Map<String, Object> map = new HashMap<>();
+//        map.put("configValue", "value1");
+        Pagination<CompanyConfig> pagination = pageMapper.fetchPage(map, 1, 3,"com.edgar.repository.CompanyConfigMapper.count", "com.edgar.repository.CompanyConfigMapper.query");
+
+        Assert.assertEquals(1, pagination.getPage());
+        Assert.assertEquals(3, pagination.getPageSize());
+        Assert.assertEquals(4, pagination.getPageList().size());
+        Assert.assertEquals(4, pagination.getTotalPages());
+        Assert.assertEquals(10, pagination.getTotalRecords());
+        Assert.assertEquals(3, pagination.getRecords().size());
+    }
 }

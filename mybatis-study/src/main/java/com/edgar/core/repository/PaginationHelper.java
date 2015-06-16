@@ -1,6 +1,6 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.jdbc.Pagination;
+import org.apache.ibatis.session.SqlSession;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +35,25 @@ public class PaginationHelper {
         params.put(OFFSET, offset);
         params.put(LIMIT, pageSize);
         List<T> records = mapper.query(Collections.unmodifiableMap(params));
+        return Pagination.newInstance(page, pageSize, totalRecords, records);
+    }
+
+
+    public static <T> Pagination fetchPage2(SqlSession session,  Map<String, Object> params, final int page, final int pageSize, String countStmt, String selectStmt) {
+        params.put(OFFSET, 0);
+        params.put(LIMIT, MAX_RECORDS);
+        //查询总数
+        final int totalRecords = session.selectOne(countStmt, Collections.unmodifiableMap(params));
+        //计算页面
+        int pageCount = totalRecords / pageSize;
+        if (totalRecords > pageSize * pageCount) {
+            pageCount++;
+        }
+        // TODO 计算是否是最后一页
+        int offset = (page - 1) * pageSize;
+        params.put(OFFSET, offset);
+        params.put(LIMIT, pageSize);
+        List<T> records = session.selectList(selectStmt, Collections.unmodifiableMap(params));
         return Pagination.newInstance(page, pageSize, totalRecords, records);
     }
 
