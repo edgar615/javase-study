@@ -32,4 +32,9 @@ public class CaseFormatTest {
     public void testUpperUnderscore() {
         System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, "constantName"));
     }
+
+    @Test
+    public void testUpperCamelToLowerCamel() {
+        System.out.println(CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, "ConstantName"));
+    }
 }

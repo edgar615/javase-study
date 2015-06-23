@@ -6,21 +6,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Administrator on 2015/6/23.
  */
-public class CycleDetectingLockExample {
+public class CycleDetectingLockOrderingExample {
     public static void main(String[] args) {
         //死锁
 //        Lock lockA = new ReentrantLock();
 //        Lock lockB = new ReentrantLock();
-//        CycleDetectingLockFactory.WithExplicitOrdering<MyLockOrder> factory =
-//           CycleDetectingLockFactory.newInstanceWithExplicitOrdering(MyLockOrder.class, CycleDetectingLockFactory.Policies.DISABLED);
-        CycleDetectingLockFactory factory = CycleDetectingLockFactory.newInstance(CycleDetectingLockFactory.Policies.THROW);
-        Lock lockA = factory.newReentrantLock("LockA");
-        Lock lockB = factory.newReentrantLock("LockB");
+        CycleDetectingLockFactory.WithExplicitOrdering<MyLockOrder> factory =
+           CycleDetectingLockFactory.newInstanceWithExplicitOrdering(MyLockOrder.class, CycleDetectingLockFactory.Policies.WARN);
+//        CycleDetectingLockFactory factory = CycleDetectingLockFactory.newInstance(CycleDetectingLockFactory.Policies.THROW);
+        Lock lockA = factory.newReentrantLock(MyLockOrder.FIRST);
+        Lock lockB = factory.newReentrantLock(MyLockOrder.SECOND);
+        Lock lockC = factory.newReentrantLock(MyLockOrder.THIRD);
         Runnable r1 = new Runnable() {
             @Override
             public void run() {
@@ -36,10 +36,7 @@ public class CycleDetectingLockExample {
                     try {
                         lockB.lock();
                         System.out.println("r1 get lockB");
-                    } catch (CycleDetectingLockFactory.PotentialDeadlockException e) {
-                        System.out.println("dead lock");
-                        e.printStackTrace();
-                    }finally {
+                    } finally {
                         lockB.unlock();
                     }
                 } finally {
@@ -57,9 +54,11 @@ public class CycleDetectingLockExample {
                     try {
                         lockA.lock();
                         System.out.println("r2 get lockA");
-                    } catch (CycleDetectingLockFactory.PotentialDeadlockException e) {
-                        System.out.println("dead lock");
-                        e.printStackTrace();
+                        try {
+                            lockC.lock();
+                        } finally {
+                            lockC.unlock();;
+                        }
                     } finally {
                         lockA.unlock();
                     }
@@ -69,7 +68,7 @@ public class CycleDetectingLockExample {
             }
         };
         ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(r1);
+//        service.submit(r1);
         service.submit(r2);
     }
 }
