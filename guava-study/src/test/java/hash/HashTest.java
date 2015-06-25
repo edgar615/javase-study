@@ -26,7 +26,6 @@ public class HashTest {
                 .hash();
         System.out.println(hc);
 
-
     }
 
     @Test
