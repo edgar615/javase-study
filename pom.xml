@@ -20,6 +20,9 @@
         <module>core</module>
         <module>commons-vfs2-study</module>
         <module>mybatis-study</module>
+        <module>designpattern-study</module>
+        <module>classloader-study</module>
+        <module>proxy-study</module>
     </modules>
 
     <properties>

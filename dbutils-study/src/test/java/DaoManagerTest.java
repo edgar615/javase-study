@@ -1,5 +1,3 @@
-import com.edgar.core.exception.AppException;
-import com.edgar.core.util.ExceptionUtils;
 import com.edgar.db.DaoManager;
 import com.edgar.db.SqlExecutor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -128,7 +126,7 @@ public class DaoManagerTest {
         Assert.assertFalse(connection.isClosed());
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testExecuteInTransactionAndClose() throws SQLException {
         final String insertSql = "insert into sys_user(user_id, username, password, full_name) values (?, ?, ?, ?)";
         Long result = count();

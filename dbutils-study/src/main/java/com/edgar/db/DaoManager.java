@@ -1,6 +1,5 @@
 package com.edgar.db;
 
-import com.edgar.core.util.ExceptionUtils;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -71,7 +70,7 @@ public class DaoManager {
                 DbUtils.close(conn);
             }
         } catch (SQLException e) {
-            ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeAndClose", "SQL", "数据库操作异常", e);
+//            ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeAndClose", "SQL", "数据库操作异常", e);
         }
         connections.remove();
     }
@@ -83,7 +82,7 @@ public class DaoManager {
             conn = getConnection();
             result = executor.doInConnection(conn);
         } catch (SQLException e) {
-            ExceptionUtils.thrwoAppException(this.getClass().getName() + ".execute", "SQL", "数据库操作异常", e);
+//            ExceptionUtils.thrwoAppException(this.getClass().getName() + ".execute", "SQL", "数据库操作异常", e);
         }
         return result;
     }
@@ -98,7 +97,7 @@ public class DaoManager {
             try {
                 DbUtils.close(conn);
             } catch (SQLException e) {
-                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeAndClose", "SQL", "数据库操作异常", e);
+//                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeAndClose", "SQL", "数据库操作异常", e);
             }
         }
         return result;
@@ -116,13 +115,13 @@ public class DaoManager {
             try {
                 DbUtils.rollback(conn);
             } catch (SQLException e1) {
-                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeInTransaction", "SQL", "数据库操作异常", e);
+//                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeInTransaction", "SQL", "数据库操作异常", e);
             }
         } finally {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
-                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeInTransaction", "SQL", "数据库操作异常", e);
+//                ExceptionUtils.thrwoAppException(this.getClass().getName() + ".executeInTransaction", "SQL", "数据库操作异常", e);
             }
         }
         return result;
@@ -178,7 +177,7 @@ public class DaoManager {
             }
             props.load(is);
         } catch (Exception e) {
-            ExceptionUtils.thrwoAppException("getPropertiesFromClasspath", "FILE_NOT_FOUND", "读取" + fileName + "失败", e);
+//            ExceptionUtils.thrwoAppException("getPropertiesFromClasspath", "FILE_NOT_FOUND", "读取" + fileName + "失败", e);
         }
         return props;
     }

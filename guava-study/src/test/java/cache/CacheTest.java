@@ -463,4 +463,34 @@ public class CacheTest {
         }
         TimeUnit.SECONDS.sleep(5);
     }
+
+    //BuilderSpec
+    @Test
+    public void testSpec() throws ExecutionException, InterruptedException {
+        RemovalListener<String, Person> personRemovalListener = new RemovalListener<String, Person>() {
+            @Override
+            public void onRemoval(RemovalNotification<String, Person> notification) {
+                System.out.println(notification.getKey());
+                System.out.println(notification.getValue());
+            }
+        };
+        String spec = "expireAfterWrite=5m,softValues,maximumSize=5000";
+        CacheBuilderSpec cacheBuilderSpec = CacheBuilderSpec.parse(spec);
+        PersonService personService = new PersonService();
+        LoadingCache<String, Person> personLoadingCache =
+                CacheBuilder.from(cacheBuilderSpec).newBuilder()
+                        .removalListener(personRemovalListener)
+                        .ticker(Ticker.systemTicker())
+                        .build(new CacheLoader<String, Person>() {
+                            @Override
+                            public Person load(String key) throws
+                                    Exception {
+                                return
+
+                                        personService.getPersonByFirstName(key);
+                            }
+                        });
+        personLoadingCache.get("Betty");
+        personLoadingCache.invalidate("Betty");
+    }
 }

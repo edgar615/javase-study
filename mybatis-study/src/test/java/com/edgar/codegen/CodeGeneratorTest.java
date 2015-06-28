@@ -1,6 +1,6 @@
 package com.edgar.codegen;
 
-import com.mulampaka.spring.data.jdbc.codegen.CodeGenerator;
+import com.edgar.jdbc.codegen.CodeGenerator;
 import org.junit.Test;
 
 /**
