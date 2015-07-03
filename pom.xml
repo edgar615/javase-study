@@ -23,6 +23,7 @@
         <module>designpattern-study</module>
         <module>classloader-study</module>
         <module>proxy-study</module>
+        <module>spring-study</module>
     </modules>
 
     <properties>
