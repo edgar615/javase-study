@@ -13,7 +13,7 @@
 
     <properties>
         <!-- the main class -->
-        <main.class>com.edgar.HelloWorldEmbedded</main.class>
+        <main.class>com.edgar.vertx.config.ConfigServer</main.class>
     </properties>
 
 
@@ -71,6 +71,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                        <version>18.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -78,10 +85,15 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
+                                    <!--<manifestEntries>
                                         <Main-Class>${main.class}</Main-Class>
+                                    </manifestEntries>-->
+                                    <manifestEntries>
+                                        <Main-Class>io.vertx.core.Starter</Main-Class>
+                                        <Main-Verticle>${main.class}</Main-Verticle>
                                     </manifestEntries>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
