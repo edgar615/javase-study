@@ -24,6 +24,8 @@
         <module>classloader-study</module>
         <module>proxy-study</module>
         <module>spring-study</module>
+        <module>vertx-simple</module>
+        <module>vertx-web</module>
     </modules>
 
     <properties>
