@@ -16,7 +16,7 @@ public class ConfigServer extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         vertx.createHttpServer().requestHandler(req -> {
-            req.response().end("<h1>Hello from my first " +
+            req.response().putHeader("content-type", "text/html").end("<h1>Hello from my first " +
                     "Vert.x 3 application</h1>");
         }).listen(config().getInteger("http.port", 8080),result -> {
             if (result.succeeded()) {
