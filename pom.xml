@@ -27,6 +27,7 @@
         <module>vertx-simple</module>
         <module>vertx-web</module>
         <module>sundry</module>
+        <module>hazelcast-study</module>
     </modules>
 
     <properties>
