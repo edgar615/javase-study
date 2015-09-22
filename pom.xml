@@ -29,6 +29,7 @@
         <module>sundry</module>
         <module>hazelcast-study</module>
         <module>zookeeper-study</module>
+        <module>microservices-load-balancing</module>
     </modules>
 
     <properties>
