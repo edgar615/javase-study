@@ -7,6 +7,8 @@ import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.UriSpec;
 
+import java.net.InetAddress;
+
 /**
  * Created by Administrator on 2015/9/22.
  */
@@ -29,7 +31,7 @@ public class Worker {
 
         ServiceInstance instance = ServiceInstance.builder()
                 .uriSpec(new UriSpec("{scheme}://{address}:{port}"))
-                .address("10.4.7.15")
+//                .address(InetAddress.getLocalHost().getHostAddress())
                 .port(port)
                 .name("worker").build();
 
