@@ -30,7 +30,14 @@
         <module>hazelcast-study</module>
         <module>zookeeper-study</module>
         <module>microservices-load-balancing</module>
+        <module>spring-boot-study</module>
     </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.6.RELEASE</version>
+    </parent>
 
     <properties>
         <java.version>1.8</java.version>
