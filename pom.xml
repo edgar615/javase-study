@@ -32,6 +32,7 @@
         <module>microservices-load-balancing</module>
         <module>spring-boot-study</module>
         <module>rxjava-jdbc-study</module>
+        <module>rx-java-study</module>
     </modules>
 
     <parent>
