@@ -1,12 +1,19 @@
 package com.edgar.rxjava.hello;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2015/10/10.
  */
 public class FlatMap {
     public static void main(String[] args) {
+        Observable.just(1,2,3,4,5,6).flatMap(new Func1<Integer, Observable<?>>() {
+            @Override
+            public Observable<?> call(Integer i) {
+                return Observable.just(i + 10);
+            }
+        }).subscribe(i -> System.out.println(i));
         //Observable.flatMap() takes the emissions of one Observable and returns the emissions of another Observable to take its place. It's the ol' switcheroo:
         // you thought you were getting one stream of items but instead you get another.
 //        query("Hello, world!")

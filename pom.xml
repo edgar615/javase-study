@@ -33,6 +33,7 @@
         <module>spring-boot-study</module>
         <module>rxjava-jdbc-study</module>
         <module>rx-java-study</module>
+        <module>jackson-study</module>
     </modules>
 
     <parent>
