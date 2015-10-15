@@ -36,4 +36,5 @@ public class AlarmUser {
     public Object get(String key) {
         return map.get(key);
     }
+
 }
