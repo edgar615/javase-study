@@ -95,10 +95,10 @@ public class CacheTest {
                             }
                         });
         personLoadingCache.get("Betty");
-        personLoadingCache.get("Betty");
         TimeUnit.SECONDS.sleep(6);
         personLoadingCache.get("Betty");
-        personLoadingCache.get("Edgar");
+//        personLoadingCache.get("Edgar");
+        System.out.println(personLoadingCache.getIfPresent("Edgar"));
     }
 
     @Test
@@ -160,6 +160,7 @@ public class CacheTest {
         });
 
         personLoadingCache.get("Barney", Callables.returning(personService.getPersonByFirstName("Barney")));
+        System.out.println(personLoadingCache.getIfPresent("Barney"));
     }
 
     @Test

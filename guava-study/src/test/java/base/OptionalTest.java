@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -66,8 +65,10 @@ public class OptionalTest {
     public void testOrNull() {
         Optional<String> optional = Optional.of("A");
         Assert.assertEquals("A", optional.orNull());
+        System.out.println(optional.orNull());
 
         optional = Optional.absent();
+        System.out.println(optional.orNull());
         Assert.assertNull(optional.orNull());
     }
 

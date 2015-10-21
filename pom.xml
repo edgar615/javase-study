@@ -35,6 +35,7 @@
         <module>rx-java-study</module>
         <module>jackson-study</module>
         <module>hystrix-study</module>
+        <module>assertj-study</module>
     </modules>
 
     <parent>
