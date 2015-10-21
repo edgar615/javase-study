@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<context:property-placeholder location="classpath:/db.properties" />
+	<bean id="db1.dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db1.driverClass}" />
+		<property name="jdbcUrl" value="${db1.jdbcUrl}" />
+		<property name="user" value="${db1.user}" />
+		<property name="password" value="${db1.password}" />
+	</bean>
+	<bean id="db10.dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db10.driverClass}" />
+		<property name="jdbcUrl" value="${db10.jdbcUrl}" />
+		<property name="user" value="${db10.user}" />
+		<property name="password" value="${db10.password}" />
+	</bean>
+	<bean id="dataSource" class="com.edgar.datasource.CustomerRoutingDataSource">
+		<property name="targetDataSources">
+			<map>
+				<entry key="MINOR" value-ref="db1.dataSource" />
+				<entry key="MAJOR" value-ref="db10.dataSource" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="db1.dataSource" />
+	</bean>
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<tx:jta-transaction-manager />
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="dataSource" />
+	</bean>
+	<bean id="SQLQuery" class="com.mysema.query.sql.SQLQuery" scope="prototype">
+		<constructor-arg index="0" ref="MySQLTemplates" />
+	</bean>
+	<bean id="MySQLTemplates" class="com.mysema.query.sql.MySQLTemplates" />
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- rule engine processor -->
+	<bean id="SharkysExpressLoansApplicationProcessor" class="com.edgar.core.rule.SpringRuleEngine">
+		<property name="firstStep">
+			<ref bean="ValidApplicationRule" />
+		</property>
+	</bean>
+
+	<!-- validation -->
+	<bean id="ValidApplicationRule" class="com.edgar.core.rule.ValidApplicationRule">
+		<property name="positiveOutcomeStep">
+			<ref bean="ValidStateRule" />
+		</property>
+		<property name="negativeOutcomeStep">
+			<ref bean="RejectionAction"></ref>
+		</property>
+	</bean>
+
+	<!-- rejection -->
+	<bean id="RejectionAction" class="com.edgar.core.rule.ProcessRejectionAction">
+		<property name="persistenceService">
+			<ref bean="LoanApplicationPersistenceService" />
+		</property>
+
+	</bean> <!-- persistence service -->
+	<!-- <bean id="LoanApplicationPersistenceService" class="com.edgar.core.rule.MockLoanApplicationPersistence" /> -->
+
+	<!-- check valid state -->
+	<bean id="ValidStateRule" class="com.edgar.core.rule.ValidStateRule">
+		<property name="validStates">
+			<list>
+				<value>TX</value>
+				<value>MI</value>
+			</list>
+		</property>
+		<property name="positiveOutcomeStep">
+			<ref bean="ValidIncomeExpenseRatioRule" />
+		</property>
+		<property name="negativeOutcomeStep">
+			<ref bean="RejectionAction"></ref>
+		</property>
+	</bean>
+
+
+</beans>

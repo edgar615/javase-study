@@ -38,6 +38,7 @@
         <module>assertj-study</module>
         <module>restassured-study</module>
         <module>kafka-study</module>
+        <module>mockito-study</module>
     </modules>
 
     <parent>
