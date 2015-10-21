@@ -36,6 +36,8 @@
         <module>jackson-study</module>
         <module>hystrix-study</module>
         <module>assertj-study</module>
+        <module>restassured-study</module>
+        <module>kafka-study</module>
     </modules>
 
     <parent>
