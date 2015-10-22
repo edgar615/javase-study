@@ -39,6 +39,9 @@
         <module>restassured-study</module>
         <module>kafka-study</module>
         <module>mockito-study</module>
+        <module>jmeter-study</module>
+        <module>swagger-study</module>
+        <module>docker-maven-plugin</module>
     </modules>
 
     <parent>
