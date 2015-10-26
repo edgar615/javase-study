@@ -1,4 +1,4 @@
-package concurreny;
+package concurreny.completablefuture;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -70,7 +70,13 @@ public class CompletableFutrueExample {
 
     @Test
     public void testSupplyAsync() throws ExecutionException, InterruptedException {
+        //无参方法Executor是以…Async结尾同时将会使用ForkJoinPool.commonPool()(全局的，在JDK8中介绍的通用池），这适用于CompletableFuture类中的大多数的方法。runAsync()易于理解，注意它需要Runnable，因此它返回CompletableFuture<Void>作为Runnable不返回任何值。如果你需要处理异步操作并返回结果，使用Supplier<U>:
         CompletableFuture cf = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("supplyAsync");
             return 100;
         });
@@ -78,6 +84,7 @@ public class CompletableFutrueExample {
 
     @Test
     public void testRunAsync() throws ExecutionException, InterruptedException {
+        //无参方法Executor是以…Async结尾同时将会使用ForkJoinPool.commonPool()(全局的，在JDK8中介绍的通用池），这适用于CompletableFuture类中的大多数的方法。runAsync()易于理解，注意它需要Runnable，因此它返回CompletableFuture<Void>作为Runnable不返回任何值。如果你需要处理异步操作并返回结果，使用Supplier<U>:
         CompletableFuture cf = CompletableFuture.runAsync(() -> {
             System.out.println("runAsync");
         });
@@ -102,6 +109,7 @@ public class CompletableFutrueExample {
             System.out.println("supplyAsync");
             return 100;
         });
+        //在future的管道里有两种典型的“最终”阶段方法。他们在你使用future的值的时候做好准备，当 thenAccept()提供最终的值时，thenRun执行 Runnable，这甚至没有方法去计算值
         cf.thenAccept(s -> System.out.println(s.getClass()));
     }
 
@@ -111,6 +119,7 @@ public class CompletableFutrueExample {
             System.out.println("supplyAsync");
             return 100;
         });
+        //在future的管道里有两种典型的“最终”阶段方法。他们在你使用future的值的时候做好准备，当 thenAccept()提供最终的值时，thenRun执行 Runnable，这甚至没有方法去计算值
         cf.thenRun(() -> System.out.println("run"));
     }
 
@@ -128,6 +137,17 @@ public class CompletableFutrueExample {
             System.out.println("supplyAsync");
             return 3;
         });
-        CompletableFuture c = CompletableFuture.allOf(cf, cf2, cf3);
+        //allOf()当所有的潜在futures完成时，使用了一个futures数组并且返回一个future（等待所有的障碍）。另一方面anyOf()将会等待最快的潜在futures，请看一下返回futures的一般类型
+        CompletableFuture c = CompletableFuture.allOf(cf, cf2, cf3).thenAccept((s) -> {
+            try {
+                System.out.println(cf.get());
+                System.out.println(cf2.get());
+                System.out.println(cf3.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

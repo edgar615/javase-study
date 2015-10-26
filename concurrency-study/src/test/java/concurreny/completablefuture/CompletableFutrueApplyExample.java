@@ -1,4 +1,4 @@
-package concurreny;
+package concurreny.completablefuture;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

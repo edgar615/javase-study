@@ -1,4 +1,4 @@
-package concurreny;
+package concurreny.completablefuture;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package concurreny;
+package concurreny.completablefuture;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class CompletableFutrueCombineExample {
 
+    //thenCombine()用于链接一个future时依赖另一个thenCombine，当他们都完成之后就结合两个独立的futures：
     public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
         CompletableFuture<String> completableFutureBigCompute = CompletableFuture.supplyAsync(() -> {
 // big computation

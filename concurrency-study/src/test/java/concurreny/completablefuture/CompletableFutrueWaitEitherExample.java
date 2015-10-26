@@ -1,4 +1,4 @@
-package concurreny;
+package concurreny.completablefuture;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -10,6 +10,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class CompletableFutrueWaitEitherExample {
 
+    //另一个有趣的事是CompletableFutureAPI可以等待第一个（与所有相反）完成的future。当你有两个相同类型任务的结果时就显得非常方便，你只要关心响应时间就行了，没有哪个任务是优先的。API方法(…Async变量也是可用的）
     public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
         CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
 // big computation
