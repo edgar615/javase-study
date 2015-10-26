@@ -18,6 +18,7 @@ public class CommandHelloWorld extends HystrixCommand<String> {
     @Override
     protected String run() {
         // a real example would do work like a network call here
+        System.out.println(Thread.currentThread().getId());
         return "Hello " + name + "!";
     }
 
@@ -31,5 +32,6 @@ public class CommandHelloWorld extends HystrixCommand<String> {
         //or
         Observable<String> s = new CommandHelloWorld("Bob").observe();
         System.out.println(s.toBlocking().single());
+        System.out.println(Thread.currentThread().getId());
     }
 }

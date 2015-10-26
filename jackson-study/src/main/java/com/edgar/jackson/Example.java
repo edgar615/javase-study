@@ -16,7 +16,7 @@ public class Example {
         alarmUser.setAlarmUserId("id");
 //        alarmUser.setAlarmUserName("name");
         alarmUser.getMap().put("username", "edgar");
-        alarmUser.getMap().put("password", null);
+     g   alarmUser.getMap().put("password", null);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
