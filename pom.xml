@@ -42,6 +42,7 @@
         <module>jmeter-study</module>
         <module>swagger-study</module>
         <module>docker-maven-plugin</module>
+        <module>mustache-study</module>
     </modules>
 
     <parent>
