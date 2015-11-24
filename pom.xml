@@ -43,6 +43,7 @@
         <module>swagger-study</module>
         <module>docker-maven-plugin</module>
         <module>mustache-study</module>
+        <module>powermockito-study</module>
     </modules>
 
     <parent>
