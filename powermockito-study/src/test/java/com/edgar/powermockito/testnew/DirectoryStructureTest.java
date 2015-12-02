@@ -8,6 +8,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -33,5 +35,21 @@ import java.io.File;
 
         // Optionally verify that a new File was "created". 
         verifyNew(File.class).withArguments(directoryPath); 
-    } 
- }
+    }
+
+  @Test
+  public void createTestObj() throws Exception {
+
+    TestObj directoryMock = mock(TestObj.class);
+
+    whenNew(TestObj.class).withNoArguments().thenReturn(directoryMock);
+
+    // Standard expectations
+    when(directoryMock.isResult()).thenReturn(true);
+
+    assertTrue(new DirectoryStructure().createObj());
+
+    // Optionally verify that a new File was "created".
+    verifyNew(TestObj.class).withNoArguments();
+  }
+}

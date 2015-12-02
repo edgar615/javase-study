@@ -44,6 +44,7 @@
         <module>docker-maven-plugin</module>
         <module>mustache-study</module>
         <module>powermockito-study</module>
+        <module>commons-cli-study</module>
     </modules>
 
     <parent>
