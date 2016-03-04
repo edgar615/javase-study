@@ -13,9 +13,7 @@
         <module>dbutils-study</module>
         <module>sql2o-study</module>
         <module>nio-study</module>
-        <module>concurrency-study</module>
         <module>networking-study</module>
-        <module>guava-study</module>
         <module>netty-study</module>
         <module>core</module>
         <module>commons-vfs2-study</module>
@@ -34,15 +32,16 @@
         <module>rxjava-jdbc-study</module>
         <module>rx-java-study</module>
         <module>jackson-study</module>
-        <module>hystrix-study</module>
         <module>assertj-study</module>
         <module>restassured-study</module>
-        <module>kafka-study</module>
         <module>mockito-study</module>
         <module>jmeter-study</module>
         <module>swagger-study</module>
         <module>docker-maven-plugin</module>
         <module>aspect-study</module>
+        <module>mustache-study</module>
+        <module>powermockito-study</module>
+        <module>commons-cli-study</module>
     </modules>
 
     <parent>
