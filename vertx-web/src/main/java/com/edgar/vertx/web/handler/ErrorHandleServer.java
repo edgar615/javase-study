@@ -33,7 +33,7 @@ public class ErrorHandleServer extends AbstractVerticle {
 
         // Define a failure handler
         // This will get called for any failures in the above handlers
-        Route route3 = router.get("/somepath/*");
+        Route route3 = router.get("/*");
 
         route3.failureHandler(failureRoutingContext -> {
 

@@ -15,7 +15,7 @@ public class Client extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         HttpClient client = vertx.createHttpClient();
-        HttpClientRequest req = client.request(HttpMethod.GET, 8080, "localhost", "/");
+        HttpClientRequest req = client.request(HttpMethod.GET, 9999, "localhost", "/tasks");
         req.toObservable().
 // Status code check and -> Observable<Buffer>
         flatMap(resp -> {
