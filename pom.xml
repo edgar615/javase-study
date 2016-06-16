@@ -15,7 +15,6 @@
         <module>nio-study</module>
         <module>networking-study</module>
         <module>netty-study</module>
-        <module>core</module>
         <module>commons-vfs2-study</module>
         <module>designpattern-study</module>
         <module>classloader-study</module>
