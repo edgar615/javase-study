@@ -14,9 +14,7 @@
         <module>sql2o-study</module>
         <module>nio-study</module>
         <module>networking-study</module>
-        <module>guava-study</module>
         <module>netty-study</module>
-        <module>core</module>
         <module>commons-vfs2-study</module>
         <module>designpattern-study</module>
         <module>classloader-study</module>
@@ -35,6 +33,7 @@
         <module>jmeter-study</module>
         <module>swagger-study</module>
         <module>docker-maven-plugin</module>
+        <module>aspect-study</module>
         <module>mustache-study</module>
         <module>powermockito-study</module>
         <module>commons-cli-study</module>

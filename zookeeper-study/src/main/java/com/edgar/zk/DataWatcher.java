@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class DataWatcher implements Watcher, Runnable {
 
-    private static String hostPort = "192.168.149.131:2181";
+    private static String hostPort = "localhost:2181";
     private static String zooDataPath = "/MyConfig";
     byte zoo_data[] = null;
     ZooKeeper zk;
@@ -57,7 +57,7 @@ public class DataWatcher implements Watcher, Runnable {
     @Override
     public void process(WatchedEvent event) {
         System.out.printf(
-                "\nEvent Received: %s, %s", event.toString());
+                "\nEvent Received: %s", event.toString());
         if (event.getType() == Event.EventType.NodeDataChanged) {
             try {
                 printData();

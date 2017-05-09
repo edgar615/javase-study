@@ -1,1 +1,0 @@
- This class provides default values for all Java types, as defined by the JLS.
