@@ -13,17 +13,13 @@
         <module>dbutils-study</module>
         <module>sql2o-study</module>
         <module>nio-study</module>
-        <module>networking-study</module>
         <module>netty-study</module>
         <module>commons-vfs2-study</module>
         <module>designpattern-study</module>
         <module>classloader-study</module>
         <module>proxy-study</module>
-        <module>spring-study</module>
         <module>sundry</module>
-        <module>zookeeper-study</module>
         <module>microservices-load-balancing</module>
-        <module>spring-boot-study</module>
         <module>rxjava-jdbc-study</module>
         <module>rx-java-study</module>
         <module>jackson-study</module>
@@ -31,7 +27,6 @@
         <module>restassured-study</module>
         <module>mockito-study</module>
         <module>jmeter-study</module>
-        <module>swagger-study</module>
         <module>docker-maven-plugin</module>
         <module>aspect-study</module>
         <module>mustache-study</module>
