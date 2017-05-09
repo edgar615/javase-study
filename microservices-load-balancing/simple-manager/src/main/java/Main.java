@@ -6,6 +6,8 @@ import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.ServiceProvider;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,35 +16,33 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    CuratorFramework client = CuratorFrameworkFactory.newClient("10.4.7.48:2181", new
+    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+    CuratorFramework client = CuratorFrameworkFactory.newClient("10.4.7.220:2181", new
             RetryNTimes(5, 1000));
     client.start();
 
-    ServiceDiscovery discovery = ServiceDiscoveryBuilder.builder(Void.class)
-            .basePath("csst-microservice")
+    ServiceDiscovery<String> discovery = ServiceDiscoveryBuilder.<String>builder(String.class)
+            .basePath("/discovery")
             .client(client)
             .build();
     discovery.start();
 
-    ServiceProvider provider = discovery.serviceProviderBuilder().serviceName("task")
+    ServiceProvider provider = discovery.serviceProviderBuilder().serviceName("hoho")
             .build();
     provider.start();
 
-    for (int i = 0; i < 100; i++) {
-      ServiceInstance instance = provider.getInstance();
-      System.out.println(instance);
-      if (instance != null) {
-        String address = instance.getAddress();
-        System.out.println("get : " + instance.getAddress() + ":" + instance.getPort());
+    executorService.scheduleAtFixedRate(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          ServiceInstance instance = provider.getInstance();
+          System.out.println(instance);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
+    }, 1, 1, TimeUnit.SECONDS);
 
-      TimeUnit.SECONDS.sleep(1);
-//            Vertx.vertx().createHttpClient().getNow(instance.getPort(), instance.getAddress(),
-// "/", response -> {
-//                response.bodyHandler(body -> {
-//                    System.out.println(body.toString());
-//                });
-//            });
-    }
   }
 }
