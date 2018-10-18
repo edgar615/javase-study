@@ -15,7 +15,7 @@
         <sql2o.version>1.5.3</sql2o.version>
         <mysql.version>5.1.24</mysql.version>
         <tomcat.jdbc.version>7.0.55</tomcat.jdbc.version>
-        <org.springframework.version>4.0.2.RELEASE</org.springframework.version>
+        <org.springframework.version>5.1.1.RELEASE</org.springframework.version>
     </properties>
     <dependencyManagement>
         <dependencies>
