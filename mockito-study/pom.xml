@@ -28,7 +28,7 @@
         <javax.validation.version>1.1.0.Final</javax.validation.version>
         <org.hibernate.validator.version>5.0.3.Final</org.hibernate.validator.version>
         <javax.el.version>2.2</javax.el.version>
-        <jackson.version>2.3.1</jackson.version>
+        <jackson.version>2.8.11</jackson.version>
         <tomcat.jdbc.version>7.0.55</tomcat.jdbc.version>
         <shiro.version>1.2.2</shiro.version>
         <ehcache.version>2.8.1</ehcache.version>
